@@ -5,7 +5,7 @@ import chess.PlayerColor;
 
 public class Queen extends Piece{
 
-    protected Queen(PlayerColor color) {
+    public Queen(PlayerColor color) {
         super(PieceType.QUEEN, color);
     }
 

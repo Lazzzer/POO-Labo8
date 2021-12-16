@@ -5,7 +5,7 @@ import chess.PlayerColor;
 
 public class Bishop extends Piece{
 
-    protected Bishop(PlayerColor color) {
+    public Bishop(PlayerColor color) {
         super(PieceType.BISHOP, color);
     }
 

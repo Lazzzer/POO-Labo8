@@ -6,8 +6,7 @@ import chess.PlayerColor;
 public class Pawn extends SpecialPiece{
 
     private boolean canBeEnPassant;
-
-    protected Pawn(PlayerColor color) {
+    public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color);
         canBeEnPassant = false;
     }
