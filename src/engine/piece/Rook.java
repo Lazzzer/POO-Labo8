@@ -5,8 +5,8 @@ import chess.PlayerColor;
 
 public class Rook extends SpecialPiece{
 
-    public Rook(PieceType type, PlayerColor color) {
-        super(type, color);
+    public Rook(PlayerColor color) {
+        super(PieceType.ROOK, color);
     }
 
     @Override

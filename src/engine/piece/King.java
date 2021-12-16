@@ -5,8 +5,8 @@ import chess.PlayerColor;
 
 public class King extends SpecialPiece{
 
-    public King(PieceType type, PlayerColor color) {
-        super(type, color);
+    public King(PlayerColor color) {
+        super(PieceType.KING, color);
     }
 
     @Override

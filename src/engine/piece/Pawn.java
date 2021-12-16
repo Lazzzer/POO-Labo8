@@ -5,8 +5,8 @@ import chess.PlayerColor;
 
 public class Pawn extends SpecialPiece{
 
-    protected Pawn(PieceType type, PlayerColor color) {
-        super(type, color);
+    protected Pawn(PlayerColor color) {
+        super(PieceType.PAWN, color);
     }
 
     @Override

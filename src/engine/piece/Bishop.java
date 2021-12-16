@@ -5,8 +5,8 @@ import chess.PlayerColor;
 
 public class Bishop extends Piece{
 
-    protected Bishop(PieceType type, PlayerColor color) {
-        super(type, color);
+    protected Bishop(PlayerColor color) {
+        super(PieceType.BISHOP, color);
     }
 
     @Override
