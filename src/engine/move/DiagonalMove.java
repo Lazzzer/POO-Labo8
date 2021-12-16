@@ -1,10 +1,8 @@
 package engine.move;
 
-import java.util.Map;
-
-public class DiagonalMove extends BlockableMove{
+public class DiagonalMove extends Move{
     @Override
-    public boolean move(Map<Integer, Integer> startPos, Map<Integer, Integer> endPos) {
+    public boolean move(int fromX, int fromY, int toX, int toY) {
         return false;
     }
 }

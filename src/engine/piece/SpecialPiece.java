@@ -1,12 +1,15 @@
 package engine.piece;
 
+import chess.PieceType;
 import chess.PlayerColor;
 
 public abstract class SpecialPiece extends Piece{
+    private boolean hasMoved;
 
-    protected SpecialPiece(PlayerColor color) {
-        super(color);
+    protected SpecialPiece(PieceType type, PlayerColor color) {
+        super(type, color);
+        hasMoved = false;
     }
 
-    protected abstract boolean canMoveAt(int fromX, int fromY, int toX, int toY);
+    protected abstract boolean move(int[][] gameState, int fromX, int fromY, int toX, int toY);
 }
