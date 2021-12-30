@@ -11,7 +11,7 @@ public class King extends SpecialPiece{
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return true;
+        return Math.abs(toX - fromX) <= 1 && Math.abs(toY - fromY) <= 1;
     }
 
     public boolean castling() {

@@ -4,7 +4,7 @@ import chess.PieceType;
 import chess.PlayerColor;
 
 public abstract class SpecialPiece extends Piece{
-    private boolean hasMoved;
+    protected boolean hasMoved;
 
     protected SpecialPiece(PieceType type, PlayerColor color) {
         super(type, color);
