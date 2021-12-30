@@ -10,7 +10,7 @@ public class Rook extends SpecialPiece{
     }
 
     @Override
-    protected boolean move(int[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return false;
+    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+        return true;
     }
 }

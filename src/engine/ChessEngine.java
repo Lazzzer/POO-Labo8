@@ -18,6 +18,16 @@ public class ChessEngine implements ChessController {
 
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
+        if(board[fromY][fromX] == null || (board[toY][toX] != null && board[fromY][fromX].getColor() == board[toY][toX].getColor())){
+            return false;
+        } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)){
+            view.removePiece(fromX,fromY);
+            view.removePiece(toX,toY);
+            view.putPiece(board[fromY][fromX].getPieceType(),board[fromY][fromX].getColor(),toX,toY);
+            board[toY][toX] = board[fromY][fromX];
+            board[fromY][fromX] = null;
+    
+        }
         return false;
     }
     
@@ -58,9 +68,9 @@ public class ChessEngine implements ChessController {
         board[0][boardSize -1-position] = new Bishop(PlayerColor.WHITE);
         view.putPiece(PieceType.BISHOP,PlayerColor.WHITE, boardSize -1 - position,0);
         //Noires
-        board[0][position] = new Bishop(PlayerColor.BLACK);
+        board[boardSize -1][position] = new Bishop(PlayerColor.BLACK);
         view.putPiece(PieceType.BISHOP,PlayerColor.BLACK,position, boardSize -1);
-        board[0][boardSize -1-position] = new Bishop(PlayerColor.BLACK);
+        board[boardSize -1][boardSize -1-position] = new Bishop(PlayerColor.BLACK);
         view.putPiece(PieceType.BISHOP,PlayerColor.BLACK, boardSize -1 - position, boardSize -1);
     
         position++;
@@ -71,9 +81,9 @@ public class ChessEngine implements ChessController {
         board[0][boardSize -1-position] = new King(PlayerColor.WHITE);
         view.putPiece(PieceType.KING,PlayerColor.WHITE, boardSize -1-position,0);
         //Noires
-        board[0][position] = new Queen(PlayerColor.BLACK);
+        board[boardSize -1][position] = new Queen(PlayerColor.BLACK);
         view.putPiece(PieceType.QUEEN,PlayerColor.BLACK,position, boardSize -1);
-        board[0][boardSize -1-position] = new King(PlayerColor.BLACK);
+        board[boardSize -1][boardSize -1-position] = new King(PlayerColor.BLACK);
         view.putPiece(PieceType.KING,PlayerColor.BLACK, boardSize -1-position, boardSize -1);
         
         for (int i = 0; i < boardSize; ++i){
@@ -85,6 +95,5 @@ public class ChessEngine implements ChessController {
             board[boardSize -2][i] = new Pawn(PlayerColor.BLACK);
             view.putPiece(PieceType.PAWN,PlayerColor.BLACK,i, boardSize -2);
         }
-        
     }
 }

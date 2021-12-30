@@ -11,5 +11,12 @@ public abstract class Piece {
         this.type = type;
         this.color = color;
     }
-    protected abstract boolean move(int[][] gameState, int fromX, int fromY, int toX, int toY);
+    
+    public PlayerColor getColor(){
+        return color;
+    }
+    public PieceType getPieceType(){
+        return type;
+    }
+    public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
 }
