@@ -13,6 +13,7 @@ public class Queen extends Piece{
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return (new StraightMove()).move(fromX, fromY, toX, toY) || (new DiagonalMove()).move(fromX, fromY, toX, toY);
+        return (new StraightMove()).move(gameState, fromX, fromY, toX, toY)
+                || (new DiagonalMove()).move(gameState, fromX, fromY, toX, toY);
     }
 }
