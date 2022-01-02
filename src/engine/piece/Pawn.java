@@ -2,6 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.move.rule.EnPassantRule;
 
 public class Pawn extends SpecialPiece{
 
@@ -21,26 +22,31 @@ public class Pawn extends SpecialPiece{
             return false;
         }
 
+        isValid = (new EnPassantRule()).canTakeEnPassant(gameState, fromX, fromY, toX, toY);
+
         int nbCases = hasMoved ? 1 : 2;
 
-        if (color == PlayerColor.WHITE) {
-            // Avec nbCases, on sait si le pion peut avancer de 1 ou 2.
-            isValid = toX == fromX && (toY - fromY <= nbCases && toY - fromY >= 1);
+        if (!isValid) {
+            if (color == PlayerColor.WHITE) {
+                // Avec nbCases, on sait si le pion peut avancer de 1 ou 2.
+                isValid = toX == fromX && (toY - fromY <= nbCases && toY - fromY >= 1);
 
-            // On s'assure que le pion souhaite aller que d'une case ici pour check le déplacement diagonal
-            if (toY == fromY + 1) {
-                // Si une des deux cases en diagonales sont occupées, le pion peut s'y placer
-                if (gameState[toY][toX] != null)
-                    isValid = true;
-            }
+                // On s'assure que le pion souhaite aller que d'une case ici pour check le déplacement diagonal
+                if (toY == fromY + 1) {
+                    // Si une des deux cases en diagonales sont occupées, le pion peut s'y placer
+                    if (gameState[toY][toX] != null)
+                        isValid = true;
+                }
 
-        } else {
-            isValid = toX == fromX && (toY - fromY >= -nbCases && toY - fromY <= -1);
-            if (toY == fromY - 1) {
-                if (gameState[toY][toX] != null)
-                    isValid = true;
+            } else {
+                isValid = toX == fromX && (toY - fromY >= -nbCases && toY - fromY <= -1);
+                if (toY == fromY - 1) {
+                    if (gameState[toY][toX] != null)
+                        isValid = true;
+                }
             }
         }
+
 
         if (isValid) {
             // A refactor pour pas faire l'affectation à chaque fois
@@ -51,7 +57,7 @@ public class Pawn extends SpecialPiece{
         return isValid;
     }
 
-    public Piece promote(Piece choice) {
-        return null;
+    public boolean isTakeableEnPassant() {
+        return takeableEnPassant;
     }
 }
