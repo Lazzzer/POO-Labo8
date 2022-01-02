@@ -13,8 +13,10 @@ public class EnPassantRule {
         Piece movingPiece = gameState[fromY][fromX];
         int validYCell = movingPiece.getColor() == PlayerColor.WHITE ? WHITE_EN_PASSANT_LINE : BLACK_EN_PASSANT_LINE;
         int directionY = movingPiece.getColor() == PlayerColor.WHITE ? 1 : -1;
-        if (fromY != validYCell)
+
+        if (fromY != validYCell || gameState[toY][toX] != null)
             return false;
+
         if (gameState[toY - directionY][toX] instanceof Pawn
                 && ((Pawn) gameState[toY - directionY][toX]).isTakeableEnPassant()) {
             gameState[toY - directionY][toX] = null;
