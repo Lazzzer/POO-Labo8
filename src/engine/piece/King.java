@@ -2,8 +2,10 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.move.OneCellMove;
+import engine.move.rule.CastlingRule;
 
-public class King extends SpecialPiece{
+public class King extends SpecialPiece {
 
     public King(PlayerColor color) {
         super(PieceType.KING, color);
@@ -11,10 +13,16 @@ public class King extends SpecialPiece{
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return Math.abs(toX - fromX) <= 1 && Math.abs(toY - fromY) <= 1;
-    }
+        boolean isValid = false;
+        if (!hasMoved)
+            isValid = (new CastlingRule()).canCastle(gameState, fromX, fromY, toX, toY);
 
-    public boolean castling() {
-        return false;
+        if (!isValid)
+            isValid = (new OneCellMove()).move(fromX, fromY, toX, toY);
+
+        if (isValid)
+            hasMoved = true;
+
+        return isValid;
     }
 }

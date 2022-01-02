@@ -2,7 +2,6 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
-import chess.PieceType;
 import chess.PlayerColor;
 import engine.piece.*;
 
@@ -55,6 +54,8 @@ public class ChessEngine implements ChessController {
             for (int j = 0; j < boardSize; ++j) {
                 if (board[i][j] != null) {
                     view.putPiece(board[i][j].getPieceType(), board[i][j].getColor(), j, i);
+                } else {
+                    view.removePiece(j, i);
                 }
             }
         }
@@ -75,11 +76,9 @@ public class ChessEngine implements ChessController {
         if (board[fromY][fromX] == null || board[fromY][fromX].getColor() != turn || (board[toY][toX] != null && board[fromY][fromX].getColor() == board[toY][toX].getColor())) {
             return false;
         } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)) {
-            view.removePiece(fromX, fromY);
-            view.removePiece(toX, toY);
-            view.putPiece(board[fromY][fromX].getPieceType(), board[fromY][fromX].getColor(), toX, toY);
             board[toY][toX] = board[fromY][fromX];
             board[fromY][fromX] = null;
+            drawBoard();
             switchTurn();
             return true;
         }
