@@ -1,4 +1,4 @@
-package engine.move.rule;
+package engine.rule;
 
 import chess.PlayerColor;
 import engine.piece.Pawn;
@@ -14,7 +14,7 @@ public class EnPassantRule {
         int validYCell = movingPiece.getColor() == PlayerColor.WHITE ? WHITE_EN_PASSANT_LINE : BLACK_EN_PASSANT_LINE;
         int directionY = movingPiece.getColor() == PlayerColor.WHITE ? 1 : -1;
 
-        if (fromY != validYCell || gameState[toY][toX] != null)
+        if (fromY != validYCell || toX == fromX || gameState[toY][toX] != null)
             return false;
 
         if (gameState[toY - directionY][toX] instanceof Pawn

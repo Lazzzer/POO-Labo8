@@ -1,4 +1,4 @@
-package engine.move.rule;
+package engine.rule;
 
 import chess.PlayerColor;
 import engine.piece.Piece;

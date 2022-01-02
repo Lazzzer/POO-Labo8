@@ -3,7 +3,7 @@ package engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.move.OneCellMove;
-import engine.move.rule.CastlingRule;
+import engine.rule.CastlingRule;
 
 public class King extends SpecialPiece {
 

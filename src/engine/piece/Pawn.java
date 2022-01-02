@@ -2,7 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.move.rule.EnPassantRule;
+import engine.rule.EnPassantRule;
 
 public class Pawn extends SpecialPiece{
 
@@ -49,9 +49,8 @@ public class Pawn extends SpecialPiece{
 
 
         if (isValid && !hasMoved) {
-            // A refactor pour pas faire l'affectation à chaque fois
             hasMoved = true;
-            takeableEnPassant = nbCases == 2;
+            takeableEnPassant = Math.abs(toY - fromY) == 2;
         }
 
         return isValid;
