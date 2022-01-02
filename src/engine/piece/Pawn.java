@@ -48,7 +48,7 @@ public class Pawn extends SpecialPiece{
         }
 
 
-        if (isValid) {
+        if (isValid && !hasMoved) {
             // A refactor pour pas faire l'affectation à chaque fois
             hasMoved = true;
             takeableEnPassant = nbCases == 2;
