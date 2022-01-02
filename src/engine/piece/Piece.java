@@ -1,9 +1,10 @@
 package engine.piece;
 
+import chess.ChessView.UserChoice;
 import chess.PieceType;
 import chess.PlayerColor;
 
-public abstract class Piece {
+public abstract class Piece implements UserChoice {
     protected PieceType type;
     protected PlayerColor color;
 
@@ -19,4 +20,12 @@ public abstract class Piece {
         return type;
     }
     public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
+
+    public String textValue() {
+        return getClass().getSimpleName();
+    }
+
+    public String toString() {
+        return textValue();
+    }
 }

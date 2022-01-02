@@ -4,6 +4,7 @@ import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
 import engine.piece.*;
+import engine.rule.PromotionRule;
 
 public class ChessEngine implements ChessController {
     private ChessView view;
@@ -78,6 +79,13 @@ public class ChessEngine implements ChessController {
         } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)) {
             board[toY][toX] = board[fromY][fromX];
             board[fromY][fromX] = null;
+
+            if (board[toY][toX] instanceof Pawn) {
+                if (PromotionRule.canPromote(turn, board))
+                    board[toY][toX] = view.askUser("Pawn Promotion", "Question", new Knight(board[toY][toX].getColor()),
+                            new Queen(board[toY][toX].getColor()), new Bishop(board[toY][toX].getColor()));
+            }
+
             drawBoard();
             switchTurn();
             return true;
@@ -88,7 +96,8 @@ public class ChessEngine implements ChessController {
     @Override
     public void newGame() {
         board = new Piece[boardSize][boardSize];
-        populateBoard();
+        // populateBoard();
+        board[boardSize - 2][0] = new Pawn(PlayerColor.WHITE);
         drawBoard();
         turn = PlayerColor.WHITE;
     }
