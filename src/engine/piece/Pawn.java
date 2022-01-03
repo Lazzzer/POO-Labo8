@@ -2,55 +2,31 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.move.ForwardMove;
 import engine.rule.EnPassantRule;
+import engine.rule.PawnTakeRule;
 
 public class Pawn extends SpecialPiece{
 
     private boolean takeableEnPassant;
+    private final ForwardMove forwardMove;
+
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color);
         takeableEnPassant = false;
+        forwardMove = new ForwardMove();
     }
 
-    // Gros gros refactor
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        boolean isValid;
-
-        // Pion bloqué s'il y a une pièce devant
-        if (fromX == toX && gameState[toY][fromX] != null) {
-            return false;
-        }
-
-        isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY);
-
-        int nbCases = hasMoved ? 1 : 2;
-
-        if (!isValid) {
-            if (color == PlayerColor.WHITE) {
-                // Avec nbCases, on sait si le pion peut avancer de 1 ou 2.
-                isValid = toX == fromX && (toY - fromY <= nbCases && toY - fromY >= 1);
-
-                // On s'assure que le pion souhaite aller que d'une case ici pour check le déplacement diagonal
-                if (toY == fromY + 1) {
-                    // Si une des deux cases en diagonales sont occupées, le pion peut s'y placer
-                    if (gameState[toY][toX] != null)
-                        isValid = true;
-                }
-
-            } else {
-                isValid = toX == fromX && (toY - fromY >= -nbCases && toY - fromY <= -1);
-                if (toY == fromY - 1) {
-                    if (gameState[toY][toX] != null)
-                        isValid = true;
-                }
-            }
-        }
-
+        int nbCells = hasMoved ? 1 : 2;
+        boolean isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY)
+                            || PawnTakeRule.canTake(gameState, fromX, fromY, toX, toY)
+                            || forwardMove.move(gameState, fromX, fromY, toX, toY, nbCells);
 
         if (isValid && !hasMoved) {
             hasMoved = true;
-            takeableEnPassant = Math.abs(toY - fromY) == 2;
+            takeableEnPassant = Math.abs(toY - fromY) == 2;;
         }
 
         return isValid;
