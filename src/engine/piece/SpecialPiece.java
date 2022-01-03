@@ -11,5 +11,9 @@ public abstract class SpecialPiece extends Piece{
         hasMoved = false;
     }
 
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
     public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
 }

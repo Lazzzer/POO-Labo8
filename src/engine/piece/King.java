@@ -20,7 +20,7 @@ public class King extends SpecialPiece {
         if (!isValid)
             isValid = (new OneCellMove()).move(fromX, fromY, toX, toY);
 
-        if (isValid)
+        if (isValid && !hasMoved)
             hasMoved = true;
 
         return isValid;

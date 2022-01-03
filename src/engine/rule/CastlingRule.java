@@ -16,7 +16,7 @@ public class CastlingRule {
 
         if (toY == validToY && (toX == QUEEN_SIDE_CELL || toX == KING_SIDE_CELL)) {
             if (toX == QUEEN_SIDE_CELL) {
-                if (gameState[validToY][0] instanceof Rook
+                if (gameState[validToY][0] instanceof Rook && !((Rook) gameState[validToY][0]).hasMoved()
                         && gameState[validToY][0].move(gameState, 0, validToY, QUEEN_SIDE_CELL + 1, validToY)) {
                     gameState[validToY][QUEEN_SIDE_CELL + 1] = gameState[validToY][0];
                     gameState[validToY][0] = null;

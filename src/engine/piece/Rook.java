@@ -12,6 +12,9 @@ public class Rook extends SpecialPiece{
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return (new StraightMove()).move(gameState, fromX, fromY, toX, toY);
+        boolean isValid = (new StraightMove()).move(gameState, fromX, fromY, toX, toY);
+        if (isValid && !hasMoved)
+            hasMoved = true;
+        return isValid;
     }
 }

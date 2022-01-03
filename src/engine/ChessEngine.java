@@ -96,8 +96,8 @@ public class ChessEngine implements ChessController {
     @Override
     public void newGame() {
         board = new Piece[boardSize][boardSize];
-        // populateBoard();
-        board[boardSize - 2][0] = new Pawn(PlayerColor.WHITE);
+        populateBoard();
+        // board[boardSize - 2][0] = new Pawn(PlayerColor.WHITE);
         drawBoard();
         turn = PlayerColor.WHITE;
     }
