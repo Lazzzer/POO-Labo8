@@ -4,6 +4,7 @@ import chess.ChessController;
 import chess.ChessView;
 import chess.PlayerColor;
 import engine.piece.*;
+import engine.rule.CheckRule;
 import engine.rule.PromotionRule;
 
 public class ChessEngine implements ChessController {
@@ -77,17 +78,30 @@ public class ChessEngine implements ChessController {
         if (board[fromY][fromX] == null || board[fromY][fromX].getColor() != turn || (board[toY][toX] != null && board[fromY][fromX].getColor() == board[toY][toX].getColor())) {
             return false;
         } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)) {
+
+            var tempPiece = board[toY][toX];
             board[toY][toX] = board[fromY][fromX];
             board[fromY][fromX] = null;
 
+            if (CheckRule.isChecked(turn, board)) {
+                board[fromY][fromX] = board[toY][toX];
+                board[toY][toX] = tempPiece;
+                return false;
+            }
+
             if (board[toY][toX] instanceof Pawn) {
                 if (PromotionRule.canPromote(turn, board, toY))
-                    board[toY][toX] = view.askUser("Pawn Promotion", "Question",
+                    board[toY][toX] = view.askUser("Pawn Promotion", "What do you pick?",
                             new Rook(board[toY][toX].getColor()),
                             new Knight(board[toY][toX].getColor()),
                             new Bishop(board[toY][toX].getColor()),
                             new Queen(board[toY][toX].getColor()));
             }
+
+            PlayerColor otherTurn = turn == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
+            if (CheckRule.isChecked(otherTurn, board))
+                view.displayMessage("CHECK");
+
 
             drawBoard();
             switchTurn();
