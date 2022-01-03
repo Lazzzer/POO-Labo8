@@ -13,8 +13,17 @@ public class Bishop extends Piece {
         diagonalMove = new DiagonalMove();
     }
 
+    private Bishop(Bishop piece) {
+        this(piece.color);
+    }
+
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         return diagonalMove.move(gameState, fromX, fromY, toX, toY);
+    }
+
+    @Override
+    public Bishop clone() {
+        return new Bishop(this);
     }
 }

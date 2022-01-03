@@ -17,6 +17,12 @@ public class Pawn extends SpecialPiece{
         forwardMove = new ForwardMove();
     }
 
+    private Pawn(Pawn piece) {
+        this(piece.color);
+        takeableEnPassant = piece.takeableEnPassant;
+        hasMoved = piece.hasMoved;
+    }
+
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         int nbCells = hasMoved ? 1 : 2;
@@ -34,5 +40,10 @@ public class Pawn extends SpecialPiece{
 
     public boolean isTakeableEnPassant() {
         return takeableEnPassant;
+    }
+
+    @Override
+    public Pawn clone() {
+        return new Pawn(this);
     }
 }

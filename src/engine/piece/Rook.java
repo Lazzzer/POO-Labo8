@@ -13,11 +13,21 @@ public class Rook extends SpecialPiece{
         straightMove = new StraightMove();
     }
 
+    private Rook(Rook piece) {
+        this(piece.color);
+        hasMoved = piece.hasMoved;
+    }
+
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         boolean isValid = straightMove.move(gameState, fromX, fromY, toX, toY);
         if (isValid && !hasMoved)
             hasMoved = true;
         return isValid;
+    }
+
+    @Override
+    public Rook clone() {
+        return new Rook(this);
     }
 }

@@ -13,6 +13,7 @@ public class ChessEngine implements ChessController {
 
     static final int BOARD_SIZE = 8;
     Piece[][] board;
+    Piece[][] previousBoard;
     PlayerColor turn;
     PlayerColor nextTurn;
 
@@ -90,13 +91,11 @@ public class ChessEngine implements ChessController {
             return false;
         } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)) {
 
-            var tempPiece = board[toY][toX];
             board[toY][toX] = board[fromY][fromX];
             board[fromY][fromX] = null;
 
             if (CheckRule.isChecked(turn, board)) {
-                board[fromY][fromX] = board[toY][toX];
-                board[toY][toX] = tempPiece;
+                board = deepCopyBoard(previousBoard);
                 view.displayMessage("CHECK");
                 return false;
             }
@@ -111,21 +110,71 @@ public class ChessEngine implements ChessController {
 
             drawBoard();
             switchTurn();
+            previousBoard = deepCopyBoard(board);
             return true;
         }
         return false;
     }
 
+    private Piece[][] deepCopyBoard(Piece[][] oldBoard) {
+        Piece[][] newBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
+        for (int i = 0; i < BOARD_SIZE; ++i) {
+            for (int j = 0; j < BOARD_SIZE; ++j) {
+                if (oldBoard[i][j] != null)
+                    newBoard[i][j] = oldBoard[i][j].clone();
+            }
+        }
+        return newBoard;
+    }
+
     @Override
     public void newGame() {
         board = new Piece[BOARD_SIZE][BOARD_SIZE];
-        populateBoard();
-//        board[BOARD_SIZE - 2][0] = new Pawn(PlayerColor.WHITE);
-//        board[BOARD_SIZE - 3][0] = new King(PlayerColor.BLACK);
-//        board[BOARD_SIZE - 2][4] = new King(PlayerColor.WHITE);
+        // populateBoard();
+        previousBoard = deepCopyBoard(board);
 
         drawBoard();
         turn = PlayerColor.WHITE;
         nextTurn = PlayerColor.BLACK;
+    }
+
+    private void test() {
+        board[0][0] = new King(PlayerColor.WHITE);
+        board[0][7] = new King(PlayerColor.BLACK);
+    }
+
+    private void testPromotionWithChecks() {
+        board[BOARD_SIZE - 2][0] = new Pawn(PlayerColor.WHITE);
+        board[BOARD_SIZE - 3][0] = new King(PlayerColor.BLACK);
+        board[BOARD_SIZE - 2][4] = new King(PlayerColor.WHITE);
+    }
+
+    private void testEnPassantWithChecks() {
+        board[2][3] = new King(PlayerColor.WHITE);
+        board[3][3] = new Pawn(PlayerColor.WHITE);
+        board[7][7] = new King(PlayerColor.BLACK);
+        board[5][3] = new Queen(PlayerColor.BLACK);
+        board[6][2] = new Pawn(PlayerColor.BLACK);
+    }
+
+    private void testDoubleForwardWithChecks() {
+        board[0][4] = new King(PlayerColor.WHITE);
+        board[1][3] = new Pawn(PlayerColor.WHITE);
+        board[7][7] = new King(PlayerColor.BLACK);
+        board[3][1] = new Queen(PlayerColor.BLACK);
+    }
+
+    private void testCastlingWithChecks() {
+        // Tours
+        board[0][0] = new Rook(PlayerColor.WHITE);
+        board[0][BOARD_SIZE - 1] = new Rook(PlayerColor.WHITE);
+        board[BOARD_SIZE - 1][0] = new Rook(PlayerColor.BLACK);
+        board[BOARD_SIZE - 1][BOARD_SIZE - 1] = new Rook(PlayerColor.BLACK);
+
+        // Reines et Rois
+        board[0][3] = new Queen(PlayerColor.WHITE);
+        board[0][BOARD_SIZE - 1 - 3] = new King(PlayerColor.WHITE);
+        board[BOARD_SIZE - 1][3] = new Queen(PlayerColor.BLACK);
+        board[BOARD_SIZE - 1][BOARD_SIZE - 1 - 3] = new King(PlayerColor.BLACK);
     }
 }

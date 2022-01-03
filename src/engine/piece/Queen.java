@@ -16,8 +16,17 @@ public class Queen extends Piece{
         diagonalMove = new DiagonalMove();
     }
 
+    private Queen(Queen piece) {
+        this(piece.color);
+    }
+
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         return straightMove.move(gameState, fromX, fromY, toX, toY) || diagonalMove.move(gameState, fromX, fromY, toX, toY);
+    }
+
+    @Override
+    public Queen clone() {
+        return new Queen(this);
     }
 }

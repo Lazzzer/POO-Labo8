@@ -13,6 +13,10 @@ public class King extends SpecialPiece {
         super(PieceType.KING, color);
         oneCellMove = new OneCellMove();
     }
+    private King(King piece) {
+        this(piece.color);
+        hasMoved = piece.hasMoved;
+    }
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
@@ -27,5 +31,10 @@ public class King extends SpecialPiece {
             hasMoved = true;
 
         return isValid;
+    }
+
+    @Override
+    public King clone() {
+        return new King(this);
     }
 }

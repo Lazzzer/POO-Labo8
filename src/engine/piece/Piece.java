@@ -30,4 +30,6 @@ public abstract class Piece implements UserChoice {
     }
 
     public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
+
+    public abstract Piece clone();
 }
