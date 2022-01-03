@@ -22,7 +22,7 @@ public class Pawn extends SpecialPiece{
             return false;
         }
 
-        isValid = (new EnPassantRule()).canTakeEnPassant(gameState, fromX, fromY, toX, toY);
+        isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY);
 
         int nbCases = hasMoved ? 1 : 2;
 

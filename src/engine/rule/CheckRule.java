@@ -5,6 +5,9 @@ import engine.piece.King;
 import engine.piece.Piece;
 
 public class CheckRule {
+
+    private CheckRule() {}
+
     public static boolean isChecked(PlayerColor color, Piece[][] gameState) {
         int[] coordsKing = findKing(color, gameState);
         for (int i = 0; i < gameState.length; ++i) {

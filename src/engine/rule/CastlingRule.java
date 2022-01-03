@@ -10,7 +10,9 @@ public class CastlingRule {
     static final int KING_SIDE_CELL = 6;
     static final int QUEEN_SIDE_CELL = 2;
 
-    public boolean canCastle(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+    private CastlingRule() {}
+
+    public static boolean canCastle(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         final int boardLimit = gameState.length - 1;
         int validToY = gameState[fromY][fromX].getColor() == PlayerColor.WHITE ? 0 : boardLimit;
 

@@ -7,18 +7,21 @@ import engine.rule.CastlingRule;
 
 public class King extends SpecialPiece {
 
+    private final OneCellMove oneCellMove;
+
     public King(PlayerColor color) {
         super(PieceType.KING, color);
+        oneCellMove = new OneCellMove();
     }
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         boolean isValid = false;
         if (!hasMoved)
-            isValid = (new CastlingRule()).canCastle(gameState, fromX, fromY, toX, toY);
+            isValid = CastlingRule.canCastle(gameState, fromX, fromY, toX, toY);
 
         if (!isValid)
-            isValid = (new OneCellMove()).move(gameState, fromX, fromY, toX, toY);
+            isValid = oneCellMove.move(gameState, fromX, fromY, toX, toY);
 
         if (isValid && !hasMoved)
             hasMoved = true;
