@@ -82,8 +82,11 @@ public class ChessEngine implements ChessController {
 
             if (board[toY][toX] instanceof Pawn) {
                 if (PromotionRule.canPromote(turn, board, toY))
-                    board[toY][toX] = view.askUser("Pawn Promotion", "Question", new Knight(board[toY][toX].getColor()),
-                            new Queen(board[toY][toX].getColor()), new Bishop(board[toY][toX].getColor()));
+                    board[toY][toX] = view.askUser("Pawn Promotion", "Question",
+                            new Rook(board[toY][toX].getColor()),
+                            new Knight(board[toY][toX].getColor()),
+                            new Bishop(board[toY][toX].getColor()),
+                            new Queen(board[toY][toX].getColor()));
             }
 
             drawBoard();
