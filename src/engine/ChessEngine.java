@@ -2,6 +2,7 @@ package engine;
 
 import chess.ChessController;
 import chess.ChessView;
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.piece.*;
 import engine.rule.CheckRule;
@@ -75,7 +76,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
-        if (board[fromY][fromX] == null || board[fromY][fromX].getColor() != turn || (board[toY][toX] != null && board[fromY][fromX].getColor() == board[toY][toX].getColor())) {
+        if (board[fromY][fromX] == null || board[fromY][fromX].getColor() != turn) {
             return false;
         } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)) {
 
@@ -89,7 +90,7 @@ public class ChessEngine implements ChessController {
                 return false;
             }
 
-            if (board[toY][toX] instanceof Pawn) {
+            if (board[toY][toX].getPieceType() == PieceType.PAWN) {
                 if (PromotionRule.canPromote(turn, board, toY))
                     board[toY][toX] = view.askUser("Pawn Promotion", "What do you pick?",
                             new Rook(board[toY][toX].getColor()),

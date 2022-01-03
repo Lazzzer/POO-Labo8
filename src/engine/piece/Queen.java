@@ -7,13 +7,17 @@ import engine.move.StraightMove;
 
 public class Queen extends Piece{
 
+    private final StraightMove straightMove;
+    private final DiagonalMove diagonalMove;
+
     public Queen(PlayerColor color) {
         super(PieceType.QUEEN, color);
+        straightMove = new StraightMove();
+        diagonalMove = new DiagonalMove();
     }
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return (new StraightMove()).move(gameState, fromX, fromY, toX, toY)
-                || (new DiagonalMove()).move(gameState, fromX, fromY, toX, toY);
+        return straightMove.move(gameState, fromX, fromY, toX, toY) || diagonalMove.move(gameState, fromX, fromY, toX, toY);
     }
 }

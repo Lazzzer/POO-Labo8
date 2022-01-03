@@ -18,7 +18,7 @@ public class King extends SpecialPiece {
             isValid = (new CastlingRule()).canCastle(gameState, fromX, fromY, toX, toY);
 
         if (!isValid)
-            isValid = (new OneCellMove()).move(fromX, fromY, toX, toY);
+            isValid = (new OneCellMove()).move(gameState, fromX, fromY, toX, toY);
 
         if (isValid && !hasMoved)
             hasMoved = true;

@@ -2,19 +2,13 @@ package engine.move;
 
 import engine.piece.Piece;
 
-public class StraightMove extends Move{
-    // à refactor
+public class StraightMove extends BlockableMove {
     @Override
-    public boolean move(int fromX, int fromY, int toX, int toY) {
-        return toX == fromX || toY == fromY;
-    }
-
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return (toX == fromX || toY == fromY) && checkBlockingPieces(gameState, fromX, fromY, toX, toY);
+        return (toX == fromX || toY == fromY) && super.move(gameState, fromX, fromY, toX, toY);
     }
 
-    private boolean checkBlockingPieces(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-
+    protected boolean checkBlockingPieces(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         int directionX = toX >= fromX ? 1 : -1;
         int directionY = toY >= fromY ? 1 : -1;
 

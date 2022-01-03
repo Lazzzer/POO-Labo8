@@ -6,12 +6,15 @@ import engine.move.DiagonalMove;
 
 public class Bishop extends Piece {
 
+    private final DiagonalMove diagonalMove;
+
     public Bishop(PlayerColor color) {
         super(PieceType.BISHOP, color);
+        diagonalMove = new DiagonalMove();
     }
 
     @Override
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return (new DiagonalMove()).move(gameState, fromX, fromY, toX, toY);
+        return diagonalMove.move(gameState, fromX, fromY, toX, toY);
     }
 }

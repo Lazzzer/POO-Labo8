@@ -19,8 +19,8 @@ public abstract class Piece implements UserChoice {
     public PieceType getPieceType(){
         return type;
     }
-    public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
 
+    @Override
     public String textValue() {
         return getClass().getSimpleName();
     }
@@ -28,4 +28,6 @@ public abstract class Piece implements UserChoice {
     public String toString() {
         return textValue();
     }
+
+    public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
 }

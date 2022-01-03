@@ -2,18 +2,13 @@ package engine.move;
 
 import engine.piece.Piece;
 
-public class DiagonalMove extends Move {
-    // à refactor
+public class DiagonalMove extends BlockableMove {
     @Override
-    public boolean move(int fromX, int fromY, int toX, int toY) {
-        return Math.abs(toX - fromX) == Math.abs(toY - fromY);
-    }
-
     public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return Math.abs(toX - fromX) == Math.abs(toY - fromY) && checkBlockingPieces(gameState, fromX, fromY, toX, toY);
+        return Math.abs(toX - fromX) == Math.abs(toY - fromY) && super.move(gameState, fromX, fromY, toX, toY);
     }
 
-    private boolean checkBlockingPieces(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+    protected boolean checkBlockingPieces(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
         int distanceX = Math.abs(toX - fromX);
         int directionX = toX > fromX ? 1 : -1;
         int directionY = toY > fromY ? 1 : -1;
