@@ -130,7 +130,7 @@ public class ChessEngine implements ChessController {
     @Override
     public void newGame() {
         board = new Piece[BOARD_SIZE][BOARD_SIZE];
-        // populateBoard();
+        populateBoard();
         previousBoard = deepCopyBoard(board);
 
         drawBoard();
