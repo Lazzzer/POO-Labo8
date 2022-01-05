@@ -7,8 +7,8 @@ import engine.piece.Rook;
 
 public class CastlingRule {
 
-    static final int KING_SIDE_CELL = 6;
-    static final int QUEEN_SIDE_CELL = 2;
+    private static final int KING_SIDE_CELL = 6;
+    private static final int QUEEN_SIDE_CELL = 2;
 
     private CastlingRule() {}
 

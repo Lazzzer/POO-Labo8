@@ -6,8 +6,8 @@ import engine.piece.Piece;
 
 public class EnPassantRule {
 
-    static int WHITE_EN_PASSANT_LINE = 4;
-    static int BLACK_EN_PASSANT_LINE = 3;
+    private static final int WHITE_EN_PASSANT_LINE = 4;
+    private static final int BLACK_EN_PASSANT_LINE = 3;
 
     private EnPassantRule() {}
 

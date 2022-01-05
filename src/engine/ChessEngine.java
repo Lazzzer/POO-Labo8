@@ -9,13 +9,13 @@ import engine.rule.CheckRule;
 import engine.rule.PromotionRule;
 
 public class ChessEngine implements ChessController {
-    private ChessView view;
+    private static final int BOARD_SIZE = 8;
 
-    static final int BOARD_SIZE = 8;
-    Piece[][] board;
-    Piece[][] previousBoard;
-    PlayerColor turn;
-    PlayerColor nextTurn;
+    private ChessView view;
+    private Piece[][] board;
+    private Piece[][] previousBoard;
+    private PlayerColor turn;
+    private PlayerColor nextTurn;
 
     private void populateBoard() {
         int position = 0;
@@ -79,6 +79,17 @@ public class ChessEngine implements ChessController {
                 new Queen(board[toY][toX].getColor()));
     }
 
+    private Piece[][] deepCopyBoard(Piece[][] oldBoard) {
+        Piece[][] newBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
+        for (int i = 0; i < BOARD_SIZE; ++i) {
+            for (int j = 0; j < BOARD_SIZE; ++j) {
+                if (oldBoard[i][j] != null)
+                    newBoard[i][j] = oldBoard[i][j].clone();
+            }
+        }
+        return newBoard;
+    }
+
     @Override
     public void start(ChessView view) {
         this.view = view;
@@ -114,17 +125,6 @@ public class ChessEngine implements ChessController {
             return true;
         }
         return false;
-    }
-
-    private Piece[][] deepCopyBoard(Piece[][] oldBoard) {
-        Piece[][] newBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
-        for (int i = 0; i < BOARD_SIZE; ++i) {
-            for (int j = 0; j < BOARD_SIZE; ++j) {
-                if (oldBoard[i][j] != null)
-                    newBoard[i][j] = oldBoard[i][j].clone();
-            }
-        }
-        return newBoard;
     }
 
     @Override
