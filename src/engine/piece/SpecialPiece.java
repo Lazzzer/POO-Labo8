@@ -2,6 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 
 abstract class SpecialPiece extends Piece{
     protected boolean hasMoved;
@@ -15,5 +16,5 @@ abstract class SpecialPiece extends Piece{
         return hasMoved;
     }
 
-    public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
+    public abstract boolean move(GameState gameState, int fromX, int fromY, int toX, int toY);
 }

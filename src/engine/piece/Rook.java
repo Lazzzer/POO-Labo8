@@ -2,6 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 import engine.move.StraightMove;
 
 public class Rook extends SpecialPiece{
@@ -19,8 +20,8 @@ public class Rook extends SpecialPiece{
     }
 
     @Override
-    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        boolean isValid = straightMove.move(gameState, fromX, fromY, toX, toY);
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
+        boolean isValid = straightMove.move(gameState.getBoard(), fromX, fromY, toX, toY);
         if (isValid && !hasMoved)
             hasMoved = true;
         return isValid;

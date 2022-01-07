@@ -2,6 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 import engine.move.OneCellMove;
 import engine.rule.CastlingRule;
 
@@ -19,13 +20,13 @@ public class King extends SpecialPiece {
     }
 
     @Override
-    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         boolean isValid = false;
         if (!hasMoved)
-            isValid = CastlingRule.canCastle(gameState, fromX, fromY, toX, toY);
+            isValid = CastlingRule.canCastle(gameState.getBoard(), fromX, fromY, toX, toY);
 
         if (!isValid)
-            isValid = oneCellMove.move(gameState, fromX, fromY, toX, toY);
+            isValid = oneCellMove.move(gameState.getBoard(), fromX, fromY, toX, toY);
 
         if (isValid && !hasMoved)
             hasMoved = true;

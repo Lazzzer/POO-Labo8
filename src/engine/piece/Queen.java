@@ -2,6 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 import engine.move.DiagonalMove;
 import engine.move.StraightMove;
 
@@ -21,8 +22,8 @@ public class Queen extends Piece{
     }
 
     @Override
-    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
-        return straightMove.move(gameState, fromX, fromY, toX, toY) || diagonalMove.move(gameState, fromX, fromY, toX, toY);
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
+        return straightMove.move(gameState.getBoard(), fromX, fromY, toX, toY) || diagonalMove.move(gameState.getBoard(), fromX, fromY, toX, toY);
     }
 
     @Override
