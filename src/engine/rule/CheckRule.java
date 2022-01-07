@@ -3,7 +3,6 @@ package engine.rule;
 import chess.PlayerColor;
 import engine.GameState;
 import engine.piece.King;
-import engine.piece.Piece;
 
 public class CheckRule {
 

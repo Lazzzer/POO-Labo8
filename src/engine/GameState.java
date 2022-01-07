@@ -4,7 +4,7 @@ import chess.PlayerColor;
 import engine.piece.*;
 
 public class GameState {
-    private int size;
+    private final int size;
 
     private Piece[][] board;
     private Piece[][] previousBoard;
@@ -39,6 +39,8 @@ public class GameState {
     }
 
     public Piece getPiece(int row, int column) {
+        if (row >= size || column >= size || row < 0 || column < 0)
+            throw new ArrayIndexOutOfBoundsException("index is out of bound");
         return board[row][column];
     }
 
@@ -66,23 +68,11 @@ public class GameState {
         return turn;
     }
 
-    public void setTurn(PlayerColor turn) {
-        this.turn = turn;
-    }
-
     public PlayerColor getNextTurn() {
         return nextTurn;
     }
 
-    public void setNextTurn(PlayerColor nextTurn) {
-        this.nextTurn = nextTurn;
-    }
-
     public int getNbTurns() {
         return nbTurns;
-    }
-
-    public void setNbTurns(int nbTurns) {
-        this.nbTurns = nbTurns;
     }
 }

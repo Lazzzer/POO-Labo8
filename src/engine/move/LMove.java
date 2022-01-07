@@ -1,7 +1,6 @@
 package engine.move;
 
 import engine.GameState;
-import engine.piece.Piece;
 
 public class LMove extends Move {
     @Override

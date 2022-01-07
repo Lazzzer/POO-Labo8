@@ -1,7 +1,6 @@
 package engine.move;
 
 import engine.GameState;
-import engine.piece.Piece;
 
 public class OneCellMove extends Move {
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
