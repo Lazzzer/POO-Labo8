@@ -3,7 +3,7 @@ package engine;
 import chess.PlayerColor;
 import engine.piece.*;
 
-class GameState {
+public class GameState {
     private int size;
 
     private Piece[][] board;

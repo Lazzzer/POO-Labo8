@@ -44,7 +44,7 @@ public class ChessEngine implements ChessController {
     public boolean move(int fromX, int fromY, int toX, int toY) {
         if (gameState.getPiece(fromY, fromX) == null || gameState.getPiece(fromY, fromX).getColor() != gameState.getTurn()) {
             return false;
-        } else if (gameState.getPiece(fromY, fromX).move(gameState.getBoard(), fromX, fromY, toX, toY)) {
+        } else if (gameState.getPiece(fromY, fromX).move(gameState, fromX, fromY, toX, toY)) {
 
             gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
             gameState.setPiece(null, fromY, fromX);
