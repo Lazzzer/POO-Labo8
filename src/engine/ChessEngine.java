@@ -73,7 +73,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public void newGame() {
-        gameState = new GameState(populateBoard(), BOARD_SIZE, PlayerColor.WHITE);
+        gameState = new GameState(testEnPassant(), BOARD_SIZE, PlayerColor.WHITE);
         drawBoard();
     }
 
@@ -157,6 +157,22 @@ public class ChessEngine implements ChessController {
         board[7][7] = new King(PlayerColor.BLACK);
         board[3][1] = new Queen(PlayerColor.BLACK);
 
+        return board;
+    }
+    
+    private Piece[][] testEnPassant() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+        board[7][0] = new King(PlayerColor.WHITE);
+        board[7][7] = new King(PlayerColor.BLACK);
+    
+        board[1][0] = new Pawn(PlayerColor.WHITE);
+        board[1][2] = new Pawn(PlayerColor.WHITE);
+        board[4][5] = new Pawn(PlayerColor.WHITE);
+    
+        board[6][4] = new Pawn(PlayerColor.BLACK);
+        board[6][6] = new Pawn(PlayerColor.BLACK);
+        board[3][1] = new Pawn(PlayerColor.BLACK);
+        
         return board;
     }
 
