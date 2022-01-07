@@ -9,7 +9,6 @@ import engine.rule.PawnTakeRule;
 
 public class Pawn extends SpecialPiece{
 
-    private boolean takeableEnPassant;
     private final ForwardMove forwardMove;
     private int turnEnPassant;
     public Pawn(PlayerColor color) {
@@ -20,7 +19,7 @@ public class Pawn extends SpecialPiece{
 
     private Pawn(Pawn piece) {
         this(piece.color);
-        takeableEnPassant = piece.takeableEnPassant;
+        turnEnPassant = piece.turnEnPassant;
         hasMoved = piece.hasMoved;
     }
 
@@ -39,7 +38,7 @@ public class Pawn extends SpecialPiece{
         return isValid;
     }
     
-    public int getTurn() {
+    public int getTurnEnPassant() {
         return turnEnPassant;
     }
 
