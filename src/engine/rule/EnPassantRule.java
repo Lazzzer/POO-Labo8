@@ -21,7 +21,7 @@ public class EnPassantRule {
             return false;
 
         if (gameState.getPiece(toY - directionY, toX) instanceof Pawn
-                && ((Pawn) gameState.getPiece(toY - directionY, toX)).isTakeableEnPassant()) {
+                &&  gameState.getNbTurns() - ((Pawn) gameState.getPiece(toY - directionY, toX)).getTurn() == 1) {
             gameState.setPiece(null, toY - directionY, toX);
             return true;
         }

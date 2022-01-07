@@ -11,7 +11,7 @@ public class ForwardMove extends BlockableMove{
         } else {
             isValid = (toY - fromY) <= -1;
         }
-        return isValid && Math.abs(toY - fromY) <= nbCells && super.move(gameState, fromX, fromY, toX, toY);
+        return isValid && fromX == toX && Math.abs(toY - fromY) <= nbCells && super.move(gameState, fromX, fromY, toX, toY);
     }
 
     @Override

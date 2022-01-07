@@ -14,7 +14,7 @@ public class Pawn extends SpecialPiece{
     private int turnEnPassant;
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color);
-        takeableEnPassant = false;
+        turnEnPassant = 0;
         forwardMove = new ForwardMove();
     }
 
@@ -33,14 +33,14 @@ public class Pawn extends SpecialPiece{
 
         if (isValid && !hasMoved) {
             hasMoved = true;
-            takeableEnPassant = Math.abs(toY - fromY) == 2;
+            if(Math.abs(toY - fromY) == 2)
+                turnEnPassant = gameState.getNbTurns();
         }
-
         return isValid;
     }
-
-    public boolean isTakeableEnPassant() {
-        return takeableEnPassant;
+    
+    public int getTurn() {
+        return turnEnPassant;
     }
 
     @Override
