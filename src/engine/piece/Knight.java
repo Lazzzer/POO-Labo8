@@ -20,7 +20,7 @@ public class Knight extends Piece {
 
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        return lMove.move(gameState.getBoard(), fromX, fromY, toX, toY);
+        return lMove.move(gameState, fromX, fromY, toX, toY);
     }
 
     @Override

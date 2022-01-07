@@ -49,18 +49,18 @@ public class ChessEngine implements ChessController {
             gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
             gameState.setPiece(null, fromY, fromX);
 
-            if (CheckRule.isChecked(gameState.getTurn(), gameState.getBoard())) {
+            if (CheckRule.isChecked(gameState.getTurn(), gameState)) {
                 gameState.setBoard(gameState.deepCopyBoard(gameState.getPreviousBoard()));
                 view.displayMessage("CHECK");
                 return false;
             }
 
             if (gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
-                if (PromotionRule.canPromote(gameState.getTurn(), gameState.getBoard(), toY))
+                if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
                     gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
             }
 
-            if (CheckRule.isChecked(gameState.getNextTurn(), gameState.getBoard()))
+            if (CheckRule.isChecked(gameState.getNextTurn(), gameState))
                 view.displayMessage("CHECK");
 
             drawBoard();

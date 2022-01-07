@@ -20,7 +20,7 @@ public class Bishop extends Piece {
 
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        return diagonalMove.move(gameState.getBoard(), fromX, fromY, toX, toY);
+        return diagonalMove.move(gameState, fromX, fromY, toX, toY);
     }
 
     @Override

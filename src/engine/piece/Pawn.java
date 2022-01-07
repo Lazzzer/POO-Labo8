@@ -27,9 +27,9 @@ public class Pawn extends SpecialPiece{
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         int nbCells = hasMoved ? 1 : 2;
-        boolean isValid = EnPassantRule.canTakeEnPassant(gameState.getBoard(), fromX, fromY, toX, toY)
-                            || PawnTakeRule.canTake(gameState.getBoard(), fromX, fromY, toX, toY)
-                            || forwardMove.move(gameState.getBoard(), fromX, fromY, toX, toY, nbCells);
+        boolean isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY)
+                            || PawnTakeRule.canTake(gameState, fromX, fromY, toX, toY)
+                            || forwardMove.move(gameState, fromX, fromY, toX, toY, nbCells);
 
         if (isValid && !hasMoved) {
             hasMoved = true;
