@@ -32,7 +32,7 @@ public class Pawn extends SpecialPiece{
 
         if (isValid && !hasMoved) {
             hasMoved = true;
-            takeableEnPassant = Math.abs(toY - fromY) == 2;;
+            takeableEnPassant = Math.abs(toY - fromY) == 2;
         }
 
         return isValid;
