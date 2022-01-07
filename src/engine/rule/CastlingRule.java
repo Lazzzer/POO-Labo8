@@ -2,7 +2,6 @@ package engine.rule;
 
 import chess.PlayerColor;
 import engine.GameState;
-import engine.piece.Piece;
 import engine.piece.Rook;
 
 

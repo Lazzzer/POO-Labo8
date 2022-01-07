@@ -1,7 +1,6 @@
 package engine.move;
 
 import engine.GameState;
-import engine.piece.Piece;
 
 public class DiagonalMove extends BlockableMove {
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
