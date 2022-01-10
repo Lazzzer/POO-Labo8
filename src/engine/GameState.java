@@ -1,7 +1,9 @@
 package engine;
 
+import chess.PieceType;
 import chess.PlayerColor;
-import engine.piece.*;
+import engine.piece.King;
+import engine.piece.Piece;
 
 public class GameState {
     private final int size;
@@ -36,6 +38,16 @@ public class GameState {
             }
         }
         return newBoard;
+    }
+
+    public int[] getKingCoords(PlayerColor color) {
+        for (int i = 0; i < board.length; ++i) {
+            for (int j = 0; j < board[0].length; ++j) {
+                if (getPiece(i, j) != null && getPiece(i, j).getPieceType() == PieceType.KING && getPiece(i, j).getColor() == color)
+                    return new int[]{i, j};
+            }
+        }
+        throw new RuntimeException();
     }
 
     public Piece getPiece(int row, int column) {

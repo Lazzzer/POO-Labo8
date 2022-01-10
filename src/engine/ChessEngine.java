@@ -49,7 +49,7 @@ public class ChessEngine implements ChessController {
             gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
             gameState.setPiece(null, fromY, fromX);
 
-            if (CheckRule.isChecked(gameState.getTurn(), gameState)) {
+            if (CheckRule.isChecked(gameState.getTurn(), gameState, gameState.getKingCoords(gameState.getTurn()))) {
                 gameState.setBoard(gameState.deepCopyBoard(gameState.getPreviousBoard()));
                 view.displayMessage("CHECK");
                 return false;
@@ -60,7 +60,7 @@ public class ChessEngine implements ChessController {
                     gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
             }
 
-            if (CheckRule.isChecked(gameState.getNextTurn(), gameState))
+            if (CheckRule.isChecked(gameState.getNextTurn(), gameState, gameState.getKingCoords(gameState.getNextTurn())))
                 view.displayMessage("CHECK");
 
             drawBoard();
@@ -73,7 +73,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public void newGame() {
-        gameState = new GameState(testEnPassant(), BOARD_SIZE, PlayerColor.WHITE);
+        gameState = new GameState(testCastlingWithChecks(), BOARD_SIZE, PlayerColor.WHITE);
         drawBoard();
     }
 
