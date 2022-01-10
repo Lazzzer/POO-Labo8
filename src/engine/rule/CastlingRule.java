@@ -14,13 +14,13 @@ public class CastlingRule {
 
     public static boolean canCastle(GameState gameState, int fromX, int fromY, int toX, int toY) {
         final int boardLimit = gameState.getBoard().length - 1;
-        int validToY = gameState.getTurn() == PlayerColor.WHITE ? 0 : boardLimit;
+        int validToY = gameState.getPiece(fromY, fromX).getColor() == PlayerColor.WHITE ? 0 : boardLimit;
 
         if (toY == validToY && (toX == QUEEN_SIDE_CELL || toX == KING_SIDE_CELL)) {
             if (toX == QUEEN_SIDE_CELL) {
 
                 for (int i = fromX - 1; i >= toX; --i) {
-                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {i, toY}))
+                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {toY, i}))
                         return false;
                 }
 
@@ -33,7 +33,7 @@ public class CastlingRule {
             } else {
 
                 for (int i = fromX + 1; i <= toX; ++i) {
-                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {i, toY}))
+                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {toY, i}))
                         return false;
                 }
 
