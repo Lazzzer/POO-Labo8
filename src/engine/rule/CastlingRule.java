@@ -19,7 +19,7 @@ public class CastlingRule {
         if (toY == validToY && (toX == QUEEN_SIDE_CELL || toX == KING_SIDE_CELL)) {
             if (toX == QUEEN_SIDE_CELL) {
 
-                for (int i = fromX - 1; i >= toX; --i) {
+                for (int i = fromX; i >= toX; --i) {
                     if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {toY, i}))
                         return false;
                 }
@@ -32,7 +32,7 @@ public class CastlingRule {
                 }
             } else {
 
-                for (int i = fromX + 1; i <= toX; ++i) {
+                for (int i = fromX; i <= toX; ++i) {
                     if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {toY, i}))
                         return false;
                 }
