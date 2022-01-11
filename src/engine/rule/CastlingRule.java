@@ -19,12 +19,11 @@ public class CastlingRule {
 
         if (toY == validToY && (toX == QUEEN_SIDE_CELL || toX == KING_SIDE_CELL)) {
             int rookX = toX == QUEEN_SIDE_CELL ? 0 : 7;
-            int beginLoop = toX == QUEEN_SIDE_CELL ? 1 : fromX;
+            int beginLoop = toX == QUEEN_SIDE_CELL ? toX : fromX;
             int loopLength = toX == QUEEN_SIDE_CELL ? fromX : rookX;
-            int nextKing = toX == QUEEN_SIDE_CELL ? fromX-1 : fromX+1;
+            int nextKing = toX == QUEEN_SIDE_CELL ? fromX - 1 : fromX + 1;
 
-            if (gameState.getPiece(validToY, rookX) != null && gameState.getPiece(validToY,
-                    rookX).getPieceType() == PieceType.ROOK) {
+            if (gameState.getPiece(validToY, rookX) != null && gameState.getPiece(validToY, rookX).getPieceType() == PieceType.ROOK) {
                 Rook rook = (Rook) gameState.getPiece(validToY, rookX);
 
                 if (!rook.hasMoved() && rook.move(gameState, rookX, validToY, nextKing, validToY)) {

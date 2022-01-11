@@ -194,7 +194,7 @@ public class ChessEngine implements ChessController {
         board[BOARD_SIZE - 1][0] = new Rook(PlayerColor.BLACK);
         board[BOARD_SIZE - 1][BOARD_SIZE - 1] = new Rook(PlayerColor.BLACK);
         
-        board[3][BOARD_SIZE - 1 - 3] = new Pawn(PlayerColor.WHITE);
+        board[3][BOARD_SIZE - 2] = new Pawn(PlayerColor.WHITE);
 
         // Reines et Rois
         board[0][3] = new Queen(PlayerColor.WHITE);
