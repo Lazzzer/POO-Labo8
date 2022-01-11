@@ -1,9 +1,9 @@
 package engine.rule;
 
+import chess.PieceType;
 import chess.PlayerColor;
 import engine.GameState;
 import engine.piece.Rook;
-
 
 public class CastlingRule {
 
@@ -20,29 +20,34 @@ public class CastlingRule {
             if (toX == QUEEN_SIDE_CELL) {
 
                 for (int i = fromX; i >= toX; --i) {
-                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {toY, i}))
+                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[]{toY, i}))
                         return false;
                 }
 
-                if (gameState.getPiece(validToY, 0) instanceof Rook && !((Rook) gameState.getPiece(validToY, 0)).hasMoved()
-                        && gameState.getPiece(validToY, 0).move(gameState, 0, validToY, QUEEN_SIDE_CELL + 1, validToY)) {
-                    gameState.setPiece(gameState.getPiece(validToY, 0), validToY, QUEEN_SIDE_CELL + 1);
-                    gameState.setPiece(null, validToY, 0);
-                    return true;
+                if (gameState.getPiece(validToY, 0) != null && gameState.getPiece(validToY, 0).getPieceType() == PieceType.ROOK) {
+                    Rook rook = (Rook) gameState.getPiece(validToY, 0);
+
+                    if (!rook.hasMoved() && rook.move(gameState, 0, validToY, QUEEN_SIDE_CELL + 1, validToY)) {
+                        gameState.setPiece(rook, validToY, QUEEN_SIDE_CELL + 1);
+                        gameState.setPiece(null, validToY, 0);
+                        return true;
+                    }
                 }
             } else {
 
                 for (int i = fromX; i <= toX; ++i) {
-                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[] {toY, i}))
+                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[]{toY, i}))
                         return false;
                 }
 
-                if (gameState.getPiece(validToY, boardLimit) instanceof Rook && !((Rook) gameState.getPiece(validToY, boardLimit)).hasMoved()
-                        && gameState.getPiece(validToY, boardLimit).move(gameState, boardLimit, validToY, KING_SIDE_CELL - 1,
-                        validToY)) {
-                    gameState.setPiece(gameState.getPiece(validToY, boardLimit), validToY, KING_SIDE_CELL - 1);
-                    gameState.setPiece(null, validToY, boardLimit);
-                    return true;
+                if (gameState.getPiece(validToY, boardLimit) != null && gameState.getPiece(validToY, boardLimit).getPieceType() == PieceType.ROOK) {
+                    Rook rook = (Rook) gameState.getPiece(validToY, boardLimit);
+
+                    if (!rook.hasMoved() && rook.move(gameState, boardLimit, validToY, KING_SIDE_CELL - 1, validToY)) {
+                        gameState.setPiece(rook, validToY, KING_SIDE_CELL - 1);
+                        gameState.setPiece(null, validToY, boardLimit);
+                        return true;
+                    }
                 }
             }
         }
