@@ -14,9 +14,8 @@ public class EnPassantRule {
     private EnPassantRule() {}
 
     public static boolean canTakeEnPassant(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        Piece movingPiece = gameState.getPiece(fromY, fromX);
-        int validYCell = movingPiece.getColor() == PlayerColor.WHITE ? WHITE_EN_PASSANT_LINE : BLACK_EN_PASSANT_LINE;
-        int directionY = movingPiece.getColor() == PlayerColor.WHITE ? 1 : -1;
+        int validYCell = gameState.getPiece(fromY, fromX).getColor() == PlayerColor.WHITE ? WHITE_EN_PASSANT_LINE : BLACK_EN_PASSANT_LINE;
+        int directionY = gameState.getPiece(fromY, fromX).getColor() == PlayerColor.WHITE ? 1 : -1;
 
         if (fromY != validYCell || toX == fromX || gameState.getPiece(toY, toX) != null)
             return false;

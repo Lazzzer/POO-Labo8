@@ -13,7 +13,7 @@ public class CastlingRule {
     private CastlingRule() {}
 
     public static boolean canCastle(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        final int boardLimit = gameState.getBoard().length - 1;
+        final int boardLimit = gameState.getBoardLength() - 1;
         int validToY = gameState.getPiece(fromY, fromX).getColor() == PlayerColor.WHITE ? 0 : boardLimit;
 
         if (toY == validToY && (toX == QUEEN_SIDE_CELL || toX == KING_SIDE_CELL)) {

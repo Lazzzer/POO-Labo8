@@ -2,11 +2,10 @@ package engine;
 
 import chess.PieceType;
 import chess.PlayerColor;
-import engine.piece.King;
 import engine.piece.Piece;
 
 public class GameState {
-    private final int size;
+    private final int boardLength;
 
     private Piece[][] board;
     private Piece[][] previousBoard;
@@ -14,8 +13,8 @@ public class GameState {
     private PlayerColor nextTurn;
     private int nbTurns;
 
-    public GameState(Piece[][] board, int size, PlayerColor turn) {
-        this.size = size;
+    public GameState(Piece[][] board, int boardLength, PlayerColor turn) {
+        this.boardLength = boardLength;
         this.board = board;
         previousBoard = deepCopyBoard(board);
         this.turn = turn;
@@ -30,9 +29,9 @@ public class GameState {
     }
 
     public Piece[][] deepCopyBoard(Piece[][] oldBoard) {
-        Piece[][] newBoard = new Piece[size][size];
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
+        Piece[][] newBoard = new Piece[boardLength][boardLength];
+        for (int i = 0; i < boardLength; ++i) {
+            for (int j = 0; j < boardLength; ++j) {
                 if (oldBoard[i][j] != null)
                     newBoard[i][j] = oldBoard[i][j].clone();
             }
@@ -41,8 +40,8 @@ public class GameState {
     }
 
     public int[] getKingCoords(PlayerColor color) {
-        for (int i = 0; i < board.length; ++i) {
-            for (int j = 0; j < board[0].length; ++j) {
+        for (int i = 0; i < boardLength; ++i) {
+            for (int j = 0; j < boardLength; ++j) {
                 if (getPiece(i, j) != null && getPiece(i, j).getPieceType() == PieceType.KING && getPiece(i, j).getColor() == color)
                     return new int[]{i, j};
             }
@@ -51,7 +50,7 @@ public class GameState {
     }
 
     public Piece getPiece(int row, int column) {
-        if (row >= size || column >= size || row < 0 || column < 0)
+        if (row >= boardLength || column >= boardLength || row < 0 || column < 0)
             throw new ArrayIndexOutOfBoundsException("index is out of bound");
         return board[row][column];
     }
@@ -66,6 +65,10 @@ public class GameState {
 
     public void setBoard(Piece[][] board) {
         this.board = board;
+    }
+
+    public int getBoardLength() {
+        return boardLength;
     }
 
     public Piece[][] getPreviousBoard() {
