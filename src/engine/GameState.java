@@ -66,7 +66,11 @@ public class GameState {
     public void setBoard(Piece[][] board) {
         this.board = board;
     }
-
+    
+    public void revertBoard(){
+        setBoard(deepCopyBoard(previousBoard));
+    }
+    
     public int getBoardLength() {
         return boardLength;
     }

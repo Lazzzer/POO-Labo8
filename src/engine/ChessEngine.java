@@ -57,7 +57,7 @@ public class ChessEngine implements ChessController {
                     if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
                         gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
                 }
-                isChecked = !isChecked && CheckRule.isChecked(gameState.getNextTurn(), gameState,
+                isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
                         gameState.getKingCoords(gameState.getNextTurn()));
     
                 drawBoard();
@@ -65,7 +65,7 @@ public class ChessEngine implements ChessController {
                 gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
                 goodTurn = true;
             }else{
-                gameState.setBoard(gameState.deepCopyBoard(gameState.getPreviousBoard()));
+                gameState.revertBoard();
             }
         }
         displayTurn(isChecked);
@@ -193,6 +193,8 @@ public class ChessEngine implements ChessController {
         board[0][BOARD_SIZE - 1] = new Rook(PlayerColor.WHITE);
         board[BOARD_SIZE - 1][0] = new Rook(PlayerColor.BLACK);
         board[BOARD_SIZE - 1][BOARD_SIZE - 1] = new Rook(PlayerColor.BLACK);
+        
+        board[3][BOARD_SIZE - 1 - 3] = new Pawn(PlayerColor.WHITE);
 
         // Reines et Rois
         board[0][3] = new Queen(PlayerColor.WHITE);
