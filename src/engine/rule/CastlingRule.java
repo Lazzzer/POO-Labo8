@@ -17,37 +17,22 @@ public class CastlingRule {
         int validToY = gameState.getPiece(fromY, fromX).getColor() == PlayerColor.WHITE ? 0 : boardLimit;
 
         if (toY == validToY && (toX == QUEEN_SIDE_CELL || toX == KING_SIDE_CELL)) {
-            if (toX == QUEEN_SIDE_CELL) {
-
-                for (int i = fromX; i >= toX; --i) {
+            int rookX = toX == QUEEN_SIDE_CELL ? 0 : 7;
+            int beginLoop = toX == QUEEN_SIDE_CELL ? 1 : fromX;
+            int loopLength = toX == QUEEN_SIDE_CELL ? fromX : rookX;
+            int nextKing = toX == QUEEN_SIDE_CELL ? fromX-1 : fromX+1;
+            for (int i = beginLoop; i < loopLength; ++i) {
                     if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[]{toY, i}))
                         return false;
-                }
+            }
+            if (gameState.getPiece(validToY, rookX) != null && gameState.getPiece(validToY,
+                    rookX).getPieceType() == PieceType.ROOK) {
+                Rook rook = (Rook) gameState.getPiece(validToY, rookX);
 
-                if (gameState.getPiece(validToY, 0) != null && gameState.getPiece(validToY, 0).getPieceType() == PieceType.ROOK) {
-                    Rook rook = (Rook) gameState.getPiece(validToY, 0);
-
-                    if (!rook.hasMoved() && rook.move(gameState, 0, validToY, QUEEN_SIDE_CELL + 1, validToY)) {
-                        gameState.setPiece(rook, validToY, QUEEN_SIDE_CELL + 1);
-                        gameState.setPiece(null, validToY, 0);
-                        return true;
-                    }
-                }
-            } else {
-
-                for (int i = fromX; i <= toX; ++i) {
-                    if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[]{toY, i}))
-                        return false;
-                }
-
-                if (gameState.getPiece(validToY, boardLimit) != null && gameState.getPiece(validToY, boardLimit).getPieceType() == PieceType.ROOK) {
-                    Rook rook = (Rook) gameState.getPiece(validToY, boardLimit);
-
-                    if (!rook.hasMoved() && rook.move(gameState, boardLimit, validToY, KING_SIDE_CELL - 1, validToY)) {
-                        gameState.setPiece(rook, validToY, KING_SIDE_CELL - 1);
-                        gameState.setPiece(null, validToY, boardLimit);
-                        return true;
-                    }
+                if (!rook.hasMoved() && rook.move(gameState, rookX, validToY, nextKing, validToY)) {
+                    gameState.setPiece(rook, validToY, nextKing);
+                    gameState.setPiece(null, validToY, rookX);
+                    return true;
                 }
             }
         }
