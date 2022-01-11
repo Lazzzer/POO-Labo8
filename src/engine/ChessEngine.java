@@ -13,7 +13,8 @@ public class ChessEngine implements ChessController {
 
     private ChessView view;
     private GameState gameState;
-
+    private boolean isChecked;
+    
     private void drawBoard() {
         for (int i = 0; i < BOARD_SIZE; ++i) {
             for (int j = 0; j < BOARD_SIZE; ++j) {
@@ -42,33 +43,36 @@ public class ChessEngine implements ChessController {
 
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
-        if (gameState.getPiece(fromY, fromX) == null || gameState.getPiece(fromY, fromX).getColor() != gameState.getTurn()) {
-            return false;
-        } else if (gameState.getPiece(fromY, fromX).move(gameState, fromX, fromY, toX, toY)) {
+        boolean goodTurn = false;
+        if (gameState.getPiece(fromY, fromX) != null && gameState.getPiece(fromY, fromX).getColor() == gameState.getTurn() &&
+                gameState.getPiece(fromY, fromX).move(gameState, fromX, fromY, toX, toY)) {
 
             gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
             gameState.setPiece(null, fromY, fromX);
 
-            if (CheckRule.isChecked(gameState.getTurn(), gameState, gameState.getKingCoords(gameState.getTurn()))) {
+            if (!CheckRule.isChecked(gameState.getTurn(), gameState,
+                    gameState.getKingCoords(gameState.getTurn()))) {
+                if (!isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
+                    if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
+                        gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
+                }
+                isChecked = !isChecked && CheckRule.isChecked(gameState.getNextTurn(), gameState,
+                        gameState.getKingCoords(gameState.getNextTurn()));
+    
+                drawBoard();
+                gameState.switchTurn();
+                gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
+                goodTurn = true;
+            }else{
                 gameState.setBoard(gameState.deepCopyBoard(gameState.getPreviousBoard()));
-                view.displayMessage("CHECK");
-                return false;
             }
-
-            if (gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
-                if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
-                    gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
-            }
-
-            if (CheckRule.isChecked(gameState.getNextTurn(), gameState, gameState.getKingCoords(gameState.getNextTurn())))
-                view.displayMessage("CHECK");
-
-            drawBoard();
-            gameState.switchTurn();
-            gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
-            return true;
         }
-        return false;
+        displayTurn(isChecked);
+        return goodTurn;
+    }
+    
+    void displayTurn(boolean check){
+        view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
     }
 
     @Override
