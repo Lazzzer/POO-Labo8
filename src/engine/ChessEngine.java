@@ -72,6 +72,9 @@ public class ChessEngine implements ChessController {
         return goodTurn;
     }
     
+    void displayTurn(){
+        displayTurn(false);
+    }
     void displayTurn(boolean check){
         view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
     }
@@ -80,6 +83,7 @@ public class ChessEngine implements ChessController {
     public void newGame() {
         gameState = new GameState(testCastlingWithChecks(), BOARD_SIZE, PlayerColor.WHITE);
         drawBoard();
+        displayTurn();
     }
 
     private Piece[][] populateBoard() {
