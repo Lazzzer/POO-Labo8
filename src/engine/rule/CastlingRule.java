@@ -29,14 +29,14 @@ public class CastlingRule {
                     for (int i = beginLoop; i < loopLength; ++i) {
                         gameState.setPiece(tmpKing,validToY,i);
                         if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[]{toY, i})){
+                            gameState.removePiece(validToY,i);
                             notCheck = false;
                             break;
                         }
                         gameState.removePiece(validToY,i);
                     }
                     if(notCheck){
-                        gameState.setPiece(rook, validToY, nextKing);
-                        gameState.removePiece(validToY, rookX);
+                        gameState.movePiece(toY,rookX, toY, nextKing);
                     }
                     return notCheck;
                 }

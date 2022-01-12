@@ -26,8 +26,7 @@ public class King extends SpecialPiece {
         if (!hasMoved && !isValid && !gameState.getIsChecked())
             isValid = CastlingRule.canCastle(gameState, fromX, fromY, toX, toY);
 
-        if (isValid){
-            gameState.setKingCoords(gameState.getPiece(fromY,fromX).getColor(),toY,toX);
+        if (isValid && !hasMoved){
             hasMoved = true;
         }
 

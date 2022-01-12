@@ -44,30 +44,28 @@ public class ChessEngine implements ChessController {
     public boolean move(int fromX, int fromY, int toX, int toY) {
         boolean goodTurn = false;
         if (gameState.getPiece(fromY, fromX) != null && gameState.getPiece(fromY, fromX).getColor() == gameState.getTurn()
-                && !(fromX == toX && fromY == toY) && gameState.getPiece(fromY, fromX).move(gameState,
-                fromX, fromY, toX, toY)) {
-
-            gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
-            gameState.removePiece(fromY, fromX);
-
-            if (!CheckRule.isChecked(gameState.getTurn(), gameState,
-                    gameState.getKingCoords(gameState.getTurn()))) {
-                if (!gameState.isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
-                    if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
-                        gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
+                && !(fromX == toX && fromY == toY)) {
+            gameState.cloneMovingPiece(fromY,fromX);
+            if (gameState.getPiece(fromY, fromX).move(gameState,
+                    fromX, fromY, toX, toY)) {
+                gameState.movePiece(fromY, fromX, toY, toX);
+                
+                if (!CheckRule.isChecked(gameState.getTurn(), gameState,
+                        gameState.getKingCoords(gameState.getTurn())) ) {
+                    if (!gameState.isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
+                        if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
+                            gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
+                    }
+                    gameState.isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
+                            gameState.getKingCoords(gameState.getNextTurn()));
+                    gameState.switchTurn();
+                    goodTurn = true;
+                } else {
+                    gameState.revertMove(fromY, fromX, toY, toX);
                 }
-                gameState.isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
-                        gameState.getKingCoords(gameState.getNextTurn()));
-    
-                drawBoard();
-                gameState.switchTurn();
-                gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
-                goodTurn = true;
-            }else{
-                gameState.revertBoard();
             }
         }
-        displayTurn(gameState.isChecked);
+        endTurn(gameState.isChecked);
         return goodTurn;
     }
     
@@ -77,10 +75,15 @@ public class ChessEngine implements ChessController {
     void displayTurn(boolean check){
         view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
     }
+    
+    void endTurn(boolean check){
+        displayTurn(check);
+        gameState.removedMovedPieces();
+    }
 
     @Override
     public void newGame() {
-        gameState = new GameState(testDoubleForwardWithChecks(), BOARD_SIZE, PlayerColor.WHITE);
+        gameState = new GameState(testCastlingWithChecks(), BOARD_SIZE, PlayerColor.WHITE, view);
         drawBoard();
         displayTurn();
     }
