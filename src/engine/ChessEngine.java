@@ -61,6 +61,9 @@ public class ChessEngine implements ChessController {
                         gameState.getKingCoords(gameState.getNextTurn()));
     
                 drawBoard();
+                if (gameState.getPiece(toY, toX).getPieceType() == PieceType.KING) {
+                    gameState.setKingCoords(gameState.getTurn(), toY, toX);
+                }
                 gameState.switchTurn();
                 gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
                 goodTurn = true;

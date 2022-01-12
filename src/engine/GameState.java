@@ -11,6 +11,8 @@ public class GameState {
     private Piece[][] previousBoard;
     private PlayerColor turn;
     private PlayerColor nextTurn;
+
+    private final int[][] kingCoords;
     private int nbTurns;
 
     public GameState(Piece[][] board, int boardLength, PlayerColor turn) {
@@ -19,6 +21,9 @@ public class GameState {
         previousBoard = deepCopyBoard(board);
         this.turn = turn;
         nextTurn = turn == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
+        kingCoords = new int[2][];
+        kingCoords[0] = findKingCoords(turn);
+        kingCoords[1] = findKingCoords(nextTurn);
     }
 
     public void switchTurn() {
@@ -40,6 +45,18 @@ public class GameState {
     }
 
     public int[] getKingCoords(PlayerColor color) {
+        return color == PlayerColor.WHITE ? kingCoords[0] : kingCoords[1];
+    }
+
+    public void setKingCoords(PlayerColor color, int row, int column) {
+        if (color == PlayerColor.WHITE) {
+            this.kingCoords[0] = new int[] { row, column };
+        } else {
+            this.kingCoords[1] = new int[] { row, column};
+        }
+    }
+
+    public int[] findKingCoords(PlayerColor color) {
         for (int i = 0; i < boardLength; ++i) {
             for (int j = 0; j < boardLength; ++j) {
                 if (getPiece(i, j) != null && getPiece(i, j).getPieceType() == PieceType.KING && getPiece(i, j).getColor() == color)
