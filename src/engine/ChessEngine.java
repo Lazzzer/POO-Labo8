@@ -13,7 +13,6 @@ public class ChessEngine implements ChessController {
 
     private ChessView view;
     private GameState gameState;
-    private boolean isChecked;
     
     private void drawBoard() {
         for (int i = 0; i < BOARD_SIZE; ++i) {
@@ -49,21 +48,18 @@ public class ChessEngine implements ChessController {
                 fromX, fromY, toX, toY)) {
 
             gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
-            gameState.setPiece(null, fromY, fromX);
+            gameState.removePiece(fromY, fromX);
 
             if (!CheckRule.isChecked(gameState.getTurn(), gameState,
                     gameState.getKingCoords(gameState.getTurn()))) {
-                if (!isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
+                if (!gameState.isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
                     if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
                         gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
                 }
-                isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
+                gameState.isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
                         gameState.getKingCoords(gameState.getNextTurn()));
     
                 drawBoard();
-                if (gameState.getPiece(toY, toX).getPieceType() == PieceType.KING) {
-                    gameState.setKingCoords(gameState.getTurn(), toY, toX);
-                }
                 gameState.switchTurn();
                 gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
                 goodTurn = true;
@@ -71,7 +67,7 @@ public class ChessEngine implements ChessController {
                 gameState.revertBoard();
             }
         }
-        displayTurn(isChecked);
+        displayTurn(gameState.isChecked);
         return goodTurn;
     }
     
@@ -84,7 +80,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public void newGame() {
-        gameState = new GameState(testCastlingWithChecks(), BOARD_SIZE, PlayerColor.WHITE);
+        gameState = new GameState(testDoubleForwardWithChecks(), BOARD_SIZE, PlayerColor.WHITE);
         drawBoard();
         displayTurn();
     }

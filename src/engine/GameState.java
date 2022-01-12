@@ -11,7 +11,9 @@ public class GameState {
     private Piece[][] previousBoard;
     private PlayerColor turn;
     private PlayerColor nextTurn;
-
+    
+    boolean isChecked;
+    
     private final int[][] kingCoords;
     private int nbTurns;
 
@@ -21,6 +23,7 @@ public class GameState {
         previousBoard = deepCopyBoard(board);
         this.turn = turn;
         nextTurn = turn == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
+        isChecked = false;
         kingCoords = new int[2][];
         kingCoords[0] = findKingCoords(turn);
         kingCoords[1] = findKingCoords(nextTurn);
@@ -75,6 +78,10 @@ public class GameState {
     public void setPiece(Piece piece, int row, int column) {
         board[row][column] = piece;
     }
+    
+    public void removePiece(int row, int column) {
+        setPiece(null,row,column);
+    }
 
     public Piece[][] getBoard() {
         return board;
@@ -107,7 +114,11 @@ public class GameState {
     public PlayerColor getNextTurn() {
         return nextTurn;
     }
-
+    
+    public boolean getIsChecked() {
+        return isChecked;
+    }
+    
     public int getNbTurns() {
         return nbTurns;
     }

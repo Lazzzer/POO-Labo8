@@ -23,11 +23,13 @@ public class King extends SpecialPiece {
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         boolean isValid = oneCellMove.move(gameState, fromX, fromY, toX, toY);
 
-        if (!hasMoved && !isValid)
+        if (!hasMoved && !isValid && !gameState.getIsChecked())
             isValid = CastlingRule.canCastle(gameState, fromX, fromY, toX, toY);
 
-        if (isValid && !hasMoved)
+        if (isValid){
+            gameState.setKingCoords(gameState.getPiece(fromY,fromX).getColor(),toY,toX);
             hasMoved = true;
+        }
 
         return isValid;
     }
