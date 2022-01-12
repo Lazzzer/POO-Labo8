@@ -2,6 +2,7 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 import engine.move.DiagonalMove;
 
 public class Bishop extends Piece {
@@ -18,7 +19,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         return diagonalMove.move(gameState, fromX, fromY, toX, toY);
     }
 

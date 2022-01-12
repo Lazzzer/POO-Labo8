@@ -2,29 +2,29 @@ package engine.piece;
 
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 import engine.move.ForwardMove;
 import engine.rule.EnPassantRule;
 import engine.rule.PawnTakeRule;
 
 public class Pawn extends SpecialPiece{
 
-    private boolean takeableEnPassant;
     private final ForwardMove forwardMove;
-
+    private int turnEnPassant;
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color);
-        takeableEnPassant = false;
+        turnEnPassant = 0;
         forwardMove = new ForwardMove();
     }
 
     private Pawn(Pawn piece) {
         this(piece.color);
-        takeableEnPassant = piece.takeableEnPassant;
+        turnEnPassant = piece.turnEnPassant;
         hasMoved = piece.hasMoved;
     }
 
     @Override
-    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         int nbCells = hasMoved ? 1 : 2;
         boolean isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY)
                             || PawnTakeRule.canTake(gameState, fromX, fromY, toX, toY)
@@ -32,14 +32,14 @@ public class Pawn extends SpecialPiece{
 
         if (isValid && !hasMoved) {
             hasMoved = true;
-            takeableEnPassant = Math.abs(toY - fromY) == 2;;
+            if(Math.abs(toY - fromY) == 2)
+                turnEnPassant = gameState.getNbTurns();
         }
-
         return isValid;
     }
-
-    public boolean isTakeableEnPassant() {
-        return takeableEnPassant;
+    
+    public int getTurnEnPassant() {
+        return turnEnPassant;
     }
 
     @Override

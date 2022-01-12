@@ -12,13 +12,84 @@ public class ChessEngine implements ChessController {
     private static final int BOARD_SIZE = 8;
 
     private ChessView view;
-    private Piece[][] board;
-    private Piece[][] previousBoard;
-    private PlayerColor turn;
-    private PlayerColor nextTurn;
+    private GameState gameState;
+    private boolean isChecked;
+    
+    private void drawBoard() {
+        for (int i = 0; i < BOARD_SIZE; ++i) {
+            for (int j = 0; j < BOARD_SIZE; ++j) {
+                if (gameState.getPiece(i, j) != null) {
+                    view.putPiece(gameState.getPiece(i, j).getPieceType(), gameState.getPiece(i, j).getColor(), j, i);
+                } else {
+                    view.removePiece(j, i);
+                }
+            }
+        }
+    }
 
-    private void populateBoard() {
+    private Piece promoteWithInput(int toX, int toY) {
+        return view.askUser("Pawn Promotion", "What do you pick?",
+                new Rook(gameState.getPiece(toY, toX).getColor()),
+                new Knight(gameState.getPiece(toY, toX).getColor()),
+                new Bishop(gameState.getPiece(toY, toX).getColor()),
+                new Queen(gameState.getPiece(toY, toX).getColor()));
+    }
+
+    @Override
+    public void start(ChessView view) {
+        this.view = view;
+        view.startView();
+    }
+
+    @Override
+    public boolean move(int fromX, int fromY, int toX, int toY) {
+        boolean goodTurn = false;
+        if (gameState.getPiece(fromY, fromX) != null && gameState.getPiece(fromY, fromX).getColor() == gameState.getTurn()
+                && !(fromX == toX && fromY == toY) && gameState.getPiece(fromY, fromX).move(gameState,
+                fromX, fromY, toX, toY)) {
+
+            gameState.setPiece(gameState.getPiece(fromY, fromX), toY, toX);
+            gameState.setPiece(null, fromY, fromX);
+
+            if (!CheckRule.isChecked(gameState.getTurn(), gameState,
+                    gameState.getKingCoords(gameState.getTurn()))) {
+                if (!isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
+                    if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
+                        gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
+                }
+                isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
+                        gameState.getKingCoords(gameState.getNextTurn()));
+    
+                drawBoard();
+                gameState.switchTurn();
+                gameState.setPreviousBoard(gameState.deepCopyBoard(gameState.getBoard()));
+                goodTurn = true;
+            }else{
+                gameState.revertBoard();
+            }
+        }
+        displayTurn(isChecked);
+        return goodTurn;
+    }
+    
+    void displayTurn(){
+        displayTurn(false);
+    }
+    void displayTurn(boolean check){
+        view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
+    }
+
+    @Override
+    public void newGame() {
+        gameState = new GameState(testCastlingWithChecks(), BOARD_SIZE, PlayerColor.WHITE);
+        drawBoard();
+        displayTurn();
+    }
+
+    private Piece[][] populateBoard() {
         int position = 0;
+
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
 
         // Tours
         board[0][position] = new Rook(PlayerColor.WHITE);
@@ -52,129 +123,85 @@ public class ChessEngine implements ChessController {
             board[1][i] = new Pawn(PlayerColor.WHITE);
             board[BOARD_SIZE - 2][i] = new Pawn(PlayerColor.BLACK);
         }
+
+        return board;
     }
 
-    private void drawBoard() {
-        for (int i = 0; i < BOARD_SIZE; ++i) {
-            for (int j = 0; j < BOARD_SIZE; ++j) {
-                if (board[i][j] != null) {
-                    view.putPiece(board[i][j].getPieceType(), board[i][j].getColor(), j, i);
-                } else {
-                    view.removePiece(j, i);
-                }
-            }
-        }
-    }
+    private Piece[][] test() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
 
-    private void switchTurn() {
-        turn = turn == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
-        nextTurn = turn == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
-    }
-
-    private Piece promoteWithInput(int toX, int toY) {
-        return view.askUser("Pawn Promotion", "What do you pick?",
-                new Rook(board[toY][toX].getColor()),
-                new Knight(board[toY][toX].getColor()),
-                new Bishop(board[toY][toX].getColor()),
-                new Queen(board[toY][toX].getColor()));
-    }
-
-    private Piece[][] deepCopyBoard(Piece[][] oldBoard) {
-        Piece[][] newBoard = new Piece[BOARD_SIZE][BOARD_SIZE];
-        for (int i = 0; i < BOARD_SIZE; ++i) {
-            for (int j = 0; j < BOARD_SIZE; ++j) {
-                if (oldBoard[i][j] != null)
-                    newBoard[i][j] = oldBoard[i][j].clone();
-            }
-        }
-        return newBoard;
-    }
-
-    @Override
-    public void start(ChessView view) {
-        this.view = view;
-        view.startView();
-    }
-
-    @Override
-    public boolean move(int fromX, int fromY, int toX, int toY) {
-        if (board[fromY][fromX] == null || board[fromY][fromX].getColor() != turn) {
-            return false;
-        } else if (board[fromY][fromX].move(board, fromX, fromY, toX, toY)) {
-
-            board[toY][toX] = board[fromY][fromX];
-            board[fromY][fromX] = null;
-
-            if (CheckRule.isChecked(turn, board)) {
-                board = deepCopyBoard(previousBoard);
-                view.displayMessage("CHECK");
-                return false;
-            }
-
-            if (board[toY][toX].getPieceType() == PieceType.PAWN) {
-                if (PromotionRule.canPromote(turn, board, toY))
-                    board[toY][toX] = promoteWithInput(toX, toY);
-            }
-
-            if (CheckRule.isChecked(nextTurn, board))
-                view.displayMessage("CHECK");
-
-            drawBoard();
-            switchTurn();
-            previousBoard = deepCopyBoard(board);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void newGame() {
-        board = new Piece[BOARD_SIZE][BOARD_SIZE];
-        populateBoard();
-        previousBoard = deepCopyBoard(board);
-
-        drawBoard();
-        turn = PlayerColor.WHITE;
-        nextTurn = PlayerColor.BLACK;
-    }
-
-    private void test() {
         board[0][0] = new King(PlayerColor.WHITE);
         board[0][7] = new King(PlayerColor.BLACK);
+
+        return board;
     }
 
-    private void testPromotionWithChecks() {
+    private Piece[][] testPromotionWithChecks() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+
         board[BOARD_SIZE - 2][0] = new Pawn(PlayerColor.WHITE);
         board[BOARD_SIZE - 3][0] = new King(PlayerColor.BLACK);
         board[BOARD_SIZE - 2][4] = new King(PlayerColor.WHITE);
+
+        return board;
     }
 
-    private void testEnPassantWithChecks() {
+    private Piece[][] testEnPassantWithChecks() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+
         board[2][3] = new King(PlayerColor.WHITE);
         board[3][3] = new Pawn(PlayerColor.WHITE);
         board[7][7] = new King(PlayerColor.BLACK);
         board[5][3] = new Queen(PlayerColor.BLACK);
         board[6][2] = new Pawn(PlayerColor.BLACK);
+
+        return board;
     }
 
-    private void testDoubleForwardWithChecks() {
+    private Piece[][] testDoubleForwardWithChecks() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+
         board[0][4] = new King(PlayerColor.WHITE);
         board[1][3] = new Pawn(PlayerColor.WHITE);
         board[7][7] = new King(PlayerColor.BLACK);
         board[3][1] = new Queen(PlayerColor.BLACK);
+
+        return board;
+    }
+    
+    private Piece[][] testEnPassant() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+        board[7][0] = new King(PlayerColor.WHITE);
+        board[7][7] = new King(PlayerColor.BLACK);
+    
+        board[1][0] = new Pawn(PlayerColor.WHITE);
+        board[1][2] = new Pawn(PlayerColor.WHITE);
+        board[4][5] = new Pawn(PlayerColor.WHITE);
+    
+        board[6][4] = new Pawn(PlayerColor.BLACK);
+        board[6][6] = new Pawn(PlayerColor.BLACK);
+        board[3][1] = new Pawn(PlayerColor.BLACK);
+        
+        return board;
     }
 
-    private void testCastlingWithChecks() {
+    private Piece[][] testCastlingWithChecks() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+
         // Tours
         board[0][0] = new Rook(PlayerColor.WHITE);
         board[0][BOARD_SIZE - 1] = new Rook(PlayerColor.WHITE);
         board[BOARD_SIZE - 1][0] = new Rook(PlayerColor.BLACK);
         board[BOARD_SIZE - 1][BOARD_SIZE - 1] = new Rook(PlayerColor.BLACK);
+        
+        board[3][BOARD_SIZE - 2] = new Pawn(PlayerColor.WHITE);
 
         // Reines et Rois
         board[0][3] = new Queen(PlayerColor.WHITE);
         board[0][BOARD_SIZE - 1 - 3] = new King(PlayerColor.WHITE);
         board[BOARD_SIZE - 1][3] = new Queen(PlayerColor.BLACK);
         board[BOARD_SIZE - 1][BOARD_SIZE - 1 - 3] = new King(PlayerColor.BLACK);
+
+        return board;
     }
 }

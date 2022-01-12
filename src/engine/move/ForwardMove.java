@@ -1,18 +1,24 @@
 package engine.move;
 
-import engine.piece.Piece;
+import chess.PlayerColor;
+import engine.GameState;
 
 public class ForwardMove extends BlockableMove{
-    public boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY, int nbCells) {
-        return fromX == toX && Math.abs(toY - fromY) <= nbCells && Math.abs(toY - fromY) >= 1
-                && super.move(gameState, fromX, fromY, toX, toY);
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY, int nbCells) {
+        boolean isValid;
+        if (gameState.getPiece(fromY, fromX).getColor() == PlayerColor.WHITE) {
+            isValid = (toY - fromY) >= 1;
+        } else {
+            isValid = (toY - fromY) <= -1;
+        }
+        return isValid && fromX == toX && Math.abs(toY - fromY) <= nbCells && super.move(gameState, fromX, fromY, toX, toY);
     }
 
     @Override
-    protected boolean checkBlockingPieces(Piece[][] gameState, int fromX, int fromY, int toX, int toY) {
+    protected boolean checkBlockingPieces(GameState gameState, int fromX, int fromY, int toX, int toY) {
         int directionY = toY >= fromY ? 1 : -1;
         for (int i = 1; i <= Math.abs(toY - fromY); ++i) {
-            if (gameState[fromY + i * directionY][toX] != null)
+            if (gameState.getPiece(fromY + i * directionY, toX) != null)
                 return false;
         }
         return true;

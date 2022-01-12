@@ -3,6 +3,7 @@ package engine.piece;
 import chess.ChessView.UserChoice;
 import chess.PieceType;
 import chess.PlayerColor;
+import engine.GameState;
 
 public abstract class Piece implements UserChoice {
     protected PieceType type;
@@ -29,7 +30,7 @@ public abstract class Piece implements UserChoice {
         return textValue();
     }
 
-    public abstract boolean move(Piece[][] gameState, int fromX, int fromY, int toX, int toY);
+    public abstract boolean move(GameState gameState, int fromX, int fromY, int toX, int toY);
 
     public abstract Piece clone();
 }
