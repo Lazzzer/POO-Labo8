@@ -4,7 +4,6 @@ import chess.PieceType;
 import chess.PlayerColor;
 import engine.GameState;
 import engine.piece.Pawn;
-import engine.piece.Piece;
 
 public class EnPassantRule {
 
@@ -22,7 +21,8 @@ public class EnPassantRule {
 
         if (gameState.getPiece(toY - directionY, toX) != null && gameState.getPiece(toY - directionY, toX).getPieceType() == PieceType.PAWN
                 &&  gameState.getNbTurns() - ((Pawn) gameState.getPiece(toY - directionY, toX)).getTurnEnPassant() == 1) {
-            gameState.setPiece(null, toY - directionY, toX);
+            gameState.createBoardMovement(fromY, toX,toY,toX);
+            gameState.movePiece(fromY, toX,toY,toX);
             return true;
         }
         return false;

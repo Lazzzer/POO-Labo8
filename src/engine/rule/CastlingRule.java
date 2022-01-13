@@ -21,6 +21,7 @@ public class CastlingRule {
             int beginLoop = toX == QUEEN_SIDE_CELL ? toX+1 : fromX+1;
             int loopLength = toX == QUEEN_SIDE_CELL ? fromX : rookX;
             int nextKing = toX == QUEEN_SIDE_CELL ? fromX - 1 : fromX + 1;
+            
             if (gameState.getPiece(validToY, rookX) != null && gameState.getPiece(validToY, rookX).getPieceType() == PieceType.ROOK) {
                 Rook rook = (Rook) gameState.getPiece(validToY, rookX);
                 boolean notCheck = true;
@@ -36,6 +37,7 @@ public class CastlingRule {
                         gameState.removePiece(validToY,i);
                     }
                     if(notCheck){
+                        gameState.createBoardMovement(toY,rookX, toY, nextKing);
                         gameState.movePiece(toY,rookX, toY, nextKing);
                     }
                     return notCheck;

@@ -45,11 +45,9 @@ public class ChessEngine implements ChessController {
         boolean goodTurn = false;
         if (gameState.getPiece(fromY, fromX) != null && gameState.getPiece(fromY, fromX).getColor() == gameState.getTurn()
                 && !(fromX == toX && fromY == toY)) {
-            gameState.cloneMovingPiece(fromY,fromX);
-            if (gameState.getPiece(fromY, fromX).move(gameState,
-                    fromX, fromY, toX, toY)) {
+            gameState.createBoardMovement(fromY, fromX, toY, toX);
+            if (gameState.getPiece(fromY, fromX).move(gameState, fromX, fromY, toX, toY)) {
                 gameState.movePiece(fromY, fromX, toY, toX);
-                
                 if (!CheckRule.isChecked(gameState.getTurn(), gameState,
                         gameState.getKingCoords(gameState.getTurn())) ) {
                     if (!gameState.isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
@@ -60,8 +58,8 @@ public class ChessEngine implements ChessController {
                             gameState.getKingCoords(gameState.getNextTurn()));
                     gameState.switchTurn();
                     goodTurn = true;
-                } else {
-                    gameState.revertMove(fromY, fromX, toY, toX);
+                } else{
+                    gameState.revertMoves();
                 }
             }
         }
@@ -69,14 +67,14 @@ public class ChessEngine implements ChessController {
         return goodTurn;
     }
     
-    void displayTurn(){
+    private void displayTurn(){
         displayTurn(false);
     }
-    void displayTurn(boolean check){
+    private void displayTurn(boolean check){
         view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
     }
     
-    void endTurn(boolean check){
+    private void endTurn(boolean check){
         displayTurn(check);
         gameState.removedMovedPieces();
     }
