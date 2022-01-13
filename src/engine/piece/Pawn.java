@@ -3,18 +3,18 @@ package engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.GameState;
-import engine.move.ForwardMove;
+import engine.move.OrthogonalMove;
 import engine.rule.EnPassantRule;
 import engine.rule.PawnTakeRule;
 
 public class Pawn extends SpecialPiece{
 
-    private final ForwardMove forwardMove;
+    private final OrthogonalMove orthogonal;
     private int turnEnPassant;
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color);
         turnEnPassant = 0;
-        forwardMove = new ForwardMove();
+        orthogonal = new OrthogonalMove();
     }
 
     private Pawn(Pawn piece) {
@@ -25,10 +25,16 @@ public class Pawn extends SpecialPiece{
 
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        int nbCells = hasMoved ? 1 : 2;
+        if (getColor() == PlayerColor.WHITE) {
+            if (!((toY - fromY) >= 1))
+                return false;
+        } else if (!((toY - fromY) <= -1)){
+            return false;
+        }
+
         boolean isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY)
-                            || PawnTakeRule.canTake(gameState, fromX, fromY, toX, toY)
-                            || forwardMove.move(gameState, fromX, fromY, toX, toY, nbCells);
+                || PawnTakeRule.canTake(gameState, fromX, fromY, toX, toY)
+                || orthogonal.move(gameState, fromX, fromY, toX, toY, hasMoved ? 1 : 2);
 
         if (isValid && !hasMoved) {
             hasMoved = true;

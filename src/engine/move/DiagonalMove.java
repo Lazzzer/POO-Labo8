@@ -9,7 +9,12 @@ import engine.GameState;
 public class DiagonalMove extends BlockableMove {
     
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        return Math.abs(toX - fromX) == Math.abs(toY - fromY) && super.move(gameState, fromX, fromY, toX, toY);
+        return move(gameState, fromX, fromY, toX, toY, gameState.getBoardLength() - 1);
+    }
+
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY, int nbCells) {
+        return Math.abs(toX - fromX) == Math.abs(toY - fromY) && Math.abs(toX - fromX) <= nbCells
+                && super.move(gameState, fromX, fromY, toX, toY);
     }
     
     @Override

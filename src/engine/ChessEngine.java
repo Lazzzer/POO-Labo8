@@ -87,7 +87,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public void newGame() {
-        gameState = new GameState(testPromotionWithChecks(), BOARD_SIZE, PlayerColor.WHITE, view);
+        gameState = new GameState(populateBoard(), BOARD_SIZE, PlayerColor.WHITE, view);
         drawBoard();
         displayTurn();
     }

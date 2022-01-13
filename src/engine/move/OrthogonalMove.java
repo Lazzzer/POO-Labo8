@@ -8,7 +8,12 @@ import engine.GameState;
  */
 public class OrthogonalMove extends BlockableMove {
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        return (toX == fromX || toY == fromY) && super.move(gameState, fromX, fromY, toX, toY);
+        return move(gameState, fromX, fromY, toX, toY, gameState.getBoardLength() - 1);
+    }
+
+    public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY, int nbCells) {
+        return (toX == fromX || toY == fromY) && Math.abs(toY - fromY + toX - fromX) <= nbCells
+                && super.move(gameState, fromX, fromY, toX, toY);
     }
 
     @Override
