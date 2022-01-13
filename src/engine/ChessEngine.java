@@ -27,11 +27,17 @@ public class ChessEngine implements ChessController {
     }
 
     private Piece promoteWithInput(int toX, int toY) {
-        return view.askUser("Pawn Promotion", "What do you pick?",
-                new Rook(gameState.getPiece(toY, toX).getColor()),
-                new Knight(gameState.getPiece(toY, toX).getColor()),
-                new Bishop(gameState.getPiece(toY, toX).getColor()),
-                new Queen(gameState.getPiece(toY, toX).getColor()));
+        Piece piece = null;
+
+        do {
+            piece = view.askUser("Promotion du pion", "Quelle pièce choisissez-vous ?",
+                    new Rook(gameState.getPiece(toY, toX).getColor()),
+                    new Knight(gameState.getPiece(toY, toX).getColor()),
+                    new Bishop(gameState.getPiece(toY, toX).getColor()),
+                    new Queen(gameState.getPiece(toY, toX).getColor()));
+        } while (piece == null);
+
+        return piece;
     }
 
     @Override
@@ -81,7 +87,7 @@ public class ChessEngine implements ChessController {
 
     @Override
     public void newGame() {
-        gameState = new GameState(testCastlingWithChecks(), BOARD_SIZE, PlayerColor.WHITE, view);
+        gameState = new GameState(testPromotionWithChecks(), BOARD_SIZE, PlayerColor.WHITE, view);
         drawBoard();
         displayTurn();
     }

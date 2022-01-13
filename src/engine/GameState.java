@@ -6,6 +6,7 @@ import chess.PlayerColor;
 import engine.piece.Piece;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class GameState {
     
@@ -102,8 +103,8 @@ public class GameState {
      * @return Pièce voulue
      */
     public Piece getPiece(int row, int column) {
-        if (row >= boardLength || column >= boardLength || row < 0 || column < 0)
-            throw new ArrayIndexOutOfBoundsException("index is out of bound");
+        Objects.checkIndex(row, boardLength);
+        Objects.checkIndex(column, boardLength);
         return board[row][column];
     }
     
@@ -114,8 +115,8 @@ public class GameState {
      * @param column
      */
     public void setPiece(Piece piece, int row, int column) {
-        if (row >= boardLength || column >= boardLength || row < 0 || column < 0)
-            throw new ArrayIndexOutOfBoundsException("index is out of bound");
+        Objects.checkIndex(row, boardLength);
+        Objects.checkIndex(column, boardLength);
         board[row][column] = piece;
         if(piece != null){
             if(piece.getPieceType() == PieceType.KING){
