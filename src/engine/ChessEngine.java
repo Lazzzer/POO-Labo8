@@ -8,12 +8,20 @@ import engine.piece.*;
 import engine.rule.CheckRule;
 import engine.rule.PromotionRule;
 
+/**
+ * Classe représentant un gestionnaire de partie d'échecs
+ * @author Alexandre Jaquier
+ * @author Lazar Pavicevic
+ */
 public class ChessEngine implements ChessController {
     private static final int BOARD_SIZE = 8;
 
     private ChessView view;
     private GameState gameState;
-    
+
+    /**
+     * Dessine les pièces en fonction de leur position dans le gameState.
+     */
     private void drawBoard() {
         for (int i = 0; i < BOARD_SIZE; ++i) {
             for (int j = 0; j < BOARD_SIZE; ++j) {
@@ -26,6 +34,13 @@ public class ChessEngine implements ChessController {
         }
     }
 
+    /**
+     * Retourne la pièce choisie par l'utilisateur lors de la promotion d'un pion et la place aux positions passées
+     * en paramètres
+     * @param toX Colonne d'arrivée
+     * @param toY Ligne d'arrivée
+     * @return Une pièce parmi une tour, un cavalier, un fou et une reine
+     */
     private Piece promoteWithInput(int toX, int toY) {
         Piece piece = null;
 
@@ -40,12 +55,24 @@ public class ChessEngine implements ChessController {
         return piece;
     }
 
+    /**
+     * Initialise et démarre une view
+     * @param view la vue à utiliser
+     */
     @Override
     public void start(ChessView view) {
         this.view = view;
         view.startView();
     }
 
+    /**
+     * Contrôle si le déplacement d'une pièce vers une case données est légal ou non
+     * @param fromX
+     * @param fromY
+     * @param toX
+     * @param toY
+     * @return Vrai si le mouvement est légal
+     */
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
         boolean goodTurn = false;
@@ -72,10 +99,18 @@ public class ChessEngine implements ChessController {
         endTurn(gameState.isChecked);
         return goodTurn;
     }
-    
+
+    /**
+     * Affiche le tour actuel
+     */
     private void displayTurn(){
         displayTurn(false);
     }
+
+    /**
+     * Affiche le tour actuel et un check s'il y en a un
+     * @param check Booléen spécifiant une mise en échec
+     */
     private void displayTurn(boolean check){
         view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
     }
@@ -132,6 +167,8 @@ public class ChessEngine implements ChessController {
 
         return board;
     }
+
+    /** A DELETE **/
 
     private Piece[][] test() {
         Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
