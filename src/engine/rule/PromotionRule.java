@@ -7,8 +7,8 @@ public class PromotionRule {
 
     private PromotionRule() {}
 
-    public static boolean canPromote(PlayerColor color, GameState gameState, int toY) {
+    public static boolean canPromote(PlayerColor color, GameState gameState, int toRow) {
         final int promotionLine = color == PlayerColor.WHITE ? gameState.getBoardLength() - 1 : 0;
-        return toY == promotionLine;
+        return toRow == promotionLine;
     }
 }
