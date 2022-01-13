@@ -1,5 +1,5 @@
-package engine;
 
+package engine;
 import chess.ChessController;
 import chess.ChessView;
 import chess.PieceType;

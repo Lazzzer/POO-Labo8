@@ -1,8 +1,12 @@
 package engine.move;
 
 import engine.GameState;
-
-public class StraightMove extends BlockableMove {
+/**
+ * Classe représentant un mouvement orthogonal sans limites et blockable
+ * @author Alexandre Jaquier
+ * @author Lazar Pavicevic
+ */
+public class OrthogonalMove extends BlockableMove {
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         return (toX == fromX || toY == fromY) && super.move(gameState, fromX, fromY, toX, toY);
     }

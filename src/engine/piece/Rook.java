@@ -3,15 +3,15 @@ package engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.GameState;
-import engine.move.StraightMove;
+import engine.move.OrthogonalMove;
 
 public class Rook extends SpecialPiece{
 
-    private final StraightMove straightMove;
+    private final OrthogonalMove orthogonalMove;
 
     public Rook(PlayerColor color) {
         super(PieceType.ROOK, color);
-        straightMove = new StraightMove();
+        orthogonalMove = new OrthogonalMove();
     }
 
     private Rook(Rook piece) {
@@ -21,7 +21,7 @@ public class Rook extends SpecialPiece{
 
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
-        boolean isValid = straightMove.move(gameState, fromX, fromY, toX, toY);
+        boolean isValid = orthogonalMove.move(gameState, fromX, fromY, toX, toY);
         if (isValid && !hasMoved)
             hasMoved = true;
         return isValid;

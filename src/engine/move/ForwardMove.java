@@ -3,6 +3,7 @@ package engine.move;
 import chess.PlayerColor;
 import engine.GameState;
 
+
 public class ForwardMove extends BlockableMove{
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY, int nbCells) {
         boolean isValid;
