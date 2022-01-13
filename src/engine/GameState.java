@@ -145,6 +145,9 @@ public class GameState {
      * @param columnTo
      */
     public void movePiece(int rowFrom,int columnFrom,int rowTo,int columnTo){
+        if(getPiece(rowTo,columnTo) != null){
+            createBoardMovement(rowTo,columnTo,rowTo,columnTo);
+        }
         setPiece(getPiece(rowFrom,columnFrom), rowTo,columnTo);
         removePiece(rowFrom,columnFrom);
     }
@@ -157,7 +160,7 @@ public class GameState {
      * @param columnTo
      */
     public void createBoardMovement(int rowFrom, int columnFrom, int rowTo, int columnTo){
-        moveHistory.add(0,new BoardMovement(getPiece(rowFrom,columnFrom).clone(),rowFrom,
+        moveHistory.add(new BoardMovement(getPiece(rowFrom,columnFrom).clone(),rowFrom,
                 columnFrom, rowTo, columnTo));
     }
     
@@ -166,8 +169,8 @@ public class GameState {
      */
     public void revertMoves(){
         for(BoardMovement m : moveHistory){
-            setPiece(m.piece,m.fromY,m.fromX);
             removePiece(m.toY,m.toX);
+            setPiece(m.piece,m.fromY,m.fromX);
         }
     }
     
