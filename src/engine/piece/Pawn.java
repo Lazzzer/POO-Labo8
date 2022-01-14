@@ -3,9 +3,9 @@ package engine.piece;
 import chess.PieceType;
 import chess.PlayerColor;
 import engine.GameState;
+import engine.move.DiagonalMove;
 import engine.move.OrthogonalMove;
 import engine.rule.EnPassantRule;
-import engine.rule.PawnTakeRule;
 
 /**
  * Classe représentant un pion
@@ -14,7 +14,8 @@ import engine.rule.PawnTakeRule;
  */
 public class Pawn extends SpecialPiece{
 
-    private final OrthogonalMove orthogonal;
+    private final OrthogonalMove orthogonalMove;
+    private final DiagonalMove diagonalMove;
     private int turnEnPassant;
 
     /**
@@ -24,7 +25,8 @@ public class Pawn extends SpecialPiece{
     public Pawn(PlayerColor color) {
         super(PieceType.PAWN, color);
         turnEnPassant = 0;
-        orthogonal = new OrthogonalMove();
+        orthogonalMove = new OrthogonalMove();
+        diagonalMove = new DiagonalMove();
     }
 
     /**
@@ -48,16 +50,18 @@ public class Pawn extends SpecialPiece{
      */
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
+        int directionY = toY >= fromY ? 1 : -1;
         if (getColor() == PlayerColor.WHITE) {
-            if (!((toY - fromY) >= 1))
+            if (directionY != 1)
                 return false;
-        } else if (!((toY - fromY) <= -1)){
+        } else if (directionY != -1){
             return false;
         }
 
         boolean isValid = EnPassantRule.canTakeEnPassant(gameState, fromX, fromY, toX, toY)
-                || PawnTakeRule.canTake(gameState, fromX, fromY, toX, toY)
-                || orthogonal.move(gameState, fromX, fromY, toX, toY, hasMoved ? 1 : 2);
+                || gameState.getPiece(toY, toX) != null && diagonalMove.move(gameState, fromX, fromY, toX, toY, 1)
+                || toX == fromX && gameState.getPiece(toY, toX) == null
+                                && orthogonalMove.move(gameState, fromX, fromY, toX, toY, hasMoved ? 1 : 2);
 
         if (isValid && !hasMoved) {
             hasMoved = true;
