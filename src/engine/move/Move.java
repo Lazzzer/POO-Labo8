@@ -10,6 +10,7 @@ import engine.GameState;
 abstract class Move {
     /**
      * Contrôle si le déplacement d'une pièce vers une case données est légal ou non
+     * Le mouvement est légal si la case de destination n'est pas occupé par une pièce de la même couleur
      * @param gameState État du jeu
      * @param fromX Colonne de départ
      * @param fromY Ligne de départ

@@ -19,11 +19,11 @@ public class EnPassantRule {
     
     /**
      * Contrôle si une pièce sur la case de départ peut prendre en passant sur la case d'arrivée
-     * @param gameState
-     * @param fromCol
-     * @param fromRow
-     * @param toCol
-     * @param toRow
+     * @param gameState État du jeu
+     * @param fromCol Colonne de départ
+     * @param fromRow Ligne de départ
+     * @param toCol Colonne d'arrivée
+     * @param toRow Ligne d'arrivée
      * @return Vrai si une pièce sur la case de départ passée en paramètre peut prendre en passant
      * sur la case d'arrivée
      */
@@ -35,7 +35,7 @@ public class EnPassantRule {
             return false;
 
         if (gameState.getPiece(toRow - directionY, toCol) != null && gameState.getPiece(toRow - directionY, toCol).getPieceType() == PieceType.PAWN
-                &&  gameState.getNbTurns() - ((Pawn) gameState.getPiece(toRow - directionY, toCol)).getTurnEnPassant() == 1) {
+                && gameState.getNbTurns() - ((Pawn) gameState.getPiece(toRow - directionY, toCol)).getTurnEnPassant() == 1) {
             gameState.createBoardMovement(fromRow, toCol,toRow - directionY,toCol);
             gameState.movePiece(fromRow, toCol,toRow - directionY,toCol);
             return true;

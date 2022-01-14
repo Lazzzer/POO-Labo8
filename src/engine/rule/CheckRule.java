@@ -2,6 +2,7 @@ package engine.rule;
 
 import chess.PlayerColor;
 import engine.GameState;
+
 /**
  * Classe représentant la mise en échec d'un roi
  * @author Alexandre Jaquier
@@ -12,11 +13,11 @@ public class CheckRule {
     private CheckRule() {}
     
     /**
-     * Contrôle si un roi est en échec ou non
-     * @param color
-     * @param gameState
-     * @param checkCoords
-     * @return Vrai si le roi de la couleur passée en paramètre est en échec
+     * Contrôle si la pièce issue des coordonnées est en échec ou non
+     * @param color Couleur de la pièce
+     * @param gameState État du jeu
+     * @param checkCoords Coordonnée de la pièce dans le gameState
+     * @return Vrai si la pièce de la couleur passée en paramètre est en échec
      */
     public static boolean isChecked(PlayerColor color, GameState gameState, int[] checkCoords) {
         for (int i = 0; i < gameState.getBoardLength(); ++i) {

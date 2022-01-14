@@ -51,6 +51,7 @@ public class Pawn extends SpecialPiece{
     @Override
     public boolean move(GameState gameState, int fromX, int fromY, int toX, int toY) {
         int directionY = toY >= fromY ? 1 : -1;
+        // Restreint la direction
         if (getColor() == PlayerColor.WHITE) {
             if (directionY != 1)
                 return false;

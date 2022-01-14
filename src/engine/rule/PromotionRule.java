@@ -14,9 +14,9 @@ public class PromotionRule {
 
     /**
      * Contrôle si une pièce sur la case de départ passée en paramètre peut effectuer une promotion
-     * @param color
-     * @param gameState
-     * @param toRow
+     * @param color Couleur de la pièce
+     * @param gameState État du jeu
+     * @param toRow Ligne d'arrivée
      * @return Vrai si la promotion est possible
      */
     public static boolean canPromote(PlayerColor color, GameState gameState, int toRow) {
