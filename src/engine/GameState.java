@@ -32,6 +32,7 @@ public class GameState {
     private ChessView view;
     
     boolean isChecked;
+    boolean endGame;
     
     private final int[][] kingCoords;
     private int nbTurns;
@@ -42,6 +43,7 @@ public class GameState {
         this.view = view;
         this.turn = turn;
         isChecked = false;
+        endGame = false;
         nextTurn = turn == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE;
         moveHistory = new ArrayList<>();
         kingCoords = new int[2][];

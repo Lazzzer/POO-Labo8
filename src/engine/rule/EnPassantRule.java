@@ -36,8 +36,8 @@ public class EnPassantRule {
 
         if (gameState.getPiece(toRow - directionY, toCol) != null && gameState.getPiece(toRow - directionY, toCol).getPieceType() == PieceType.PAWN
                 &&  gameState.getNbTurns() - ((Pawn) gameState.getPiece(toRow - directionY, toCol)).getTurnEnPassant() == 1) {
-            gameState.createBoardMovement(fromRow, toCol,toRow,toCol);
-            gameState.movePiece(fromRow, toCol,toRow,toCol);
+            gameState.createBoardMovement(fromRow, toCol,toRow - directionY,toCol);
+            gameState.movePiece(fromRow, toCol,toRow - directionY,toCol);
             return true;
         }
         return false;

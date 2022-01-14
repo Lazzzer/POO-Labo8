@@ -76,19 +76,23 @@ public class ChessEngine implements ChessController {
     @Override
     public boolean move(int fromX, int fromY, int toX, int toY) {
         boolean goodTurn = false;
-        if (gameState.getPiece(fromY, fromX) != null && gameState.getPiece(fromY, fromX).getColor() == gameState.getTurn()
+        if (!gameState.endGame && gameState.getPiece(fromY, fromX) != null && gameState.getPiece(fromY, fromX).getColor() == gameState.getTurn()
                 && !(fromX == toX && fromY == toY)) {
             gameState.createBoardMovement(fromY, fromX, toY, toX);
             if (gameState.getPiece(fromY, fromX).move(gameState, fromX, fromY, toX, toY)) {
                 gameState.movePiece(fromY, fromX, toY, toX);
                 if (!CheckRule.isChecked(gameState.getTurn(), gameState,
                         gameState.getKingCoords(gameState.getTurn())) ) {
+                    gameState.removedMovedPieces();
                     if (!gameState.isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
                         if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
                             gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
                     }
                     gameState.isChecked = CheckRule.isChecked(gameState.getNextTurn(), gameState,
                             gameState.getKingCoords(gameState.getNextTurn()));
+                    if(checkMate(gameState.getNextTurn())){
+                        gameState.endGame = true;
+                    }
                     gameState.switchTurn();
                     goodTurn = true;
                 } else{
@@ -116,13 +120,51 @@ public class ChessEngine implements ChessController {
     }
     
     private void endTurn(boolean check){
-        displayTurn(check);
-        gameState.removedMovedPieces();
+        if(gameState.endGame){
+            if(check){
+                view.displayMessage("ECHEC ET MAT");
+            } else{
+                view.displayMessage("PAT");
+            }
+        } else{
+            displayTurn(check);
+        }
     }
-
+    
+    /**
+     * Fonction contrôlant si un des joueurs est en échec et mat
+     * @param color
+     * @return vrai si le joueur passé en paramètre est en échec et mat
+     */
+    private boolean checkMate(PlayerColor color){
+        boolean checkMate = true;
+        for (int i = 0; i < gameState.getBoardLength(); i++) {
+            for (int j = 0; j < gameState.getBoardLength(); j++) {
+                if(gameState.getPiece(i, j) != null && gameState.getPiece(i, j).getColor() == color){
+                    for (int k = 0; k < gameState.getBoardLength(); k++) {
+                        for (int l = 0; l < gameState.getBoardLength(); l++) {
+                            gameState.createBoardMovement(i, j, k, l);
+                            if (gameState.getPiece(i, j).move(gameState, j, i, l, k)){
+                                gameState.movePiece(i, j, k, l);
+                                checkMate = CheckRule.isChecked(color, gameState,
+                                        gameState.getKingCoords(color));
+                                gameState.revertMoves();
+                            }
+                            gameState.removedMovedPieces();
+                            if(!checkMate){
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
     @Override
     public void newGame() {
-        gameState = new GameState(populateBoard(), BOARD_SIZE, PlayerColor.WHITE, view);
+        gameState = new GameState(testDoubleForwardWithChecks(), BOARD_SIZE, PlayerColor.WHITE, view);
         drawBoard();
         displayTurn();
     }
@@ -245,6 +287,16 @@ public class ChessEngine implements ChessController {
         board[BOARD_SIZE - 1][3] = new Queen(PlayerColor.BLACK);
         board[BOARD_SIZE - 1][BOARD_SIZE - 1 - 3] = new King(PlayerColor.BLACK);
 
+        return board;
+    }
+    
+    private Piece[][] testPATAndCheckmate() {
+        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
+        board[6][2] = new King(PlayerColor.WHITE);
+        board[6][0] = new King(PlayerColor.BLACK);
+        
+        board[5][2] = new Queen(PlayerColor.WHITE);
+        
         return board;
     }
 }
