@@ -23,6 +23,10 @@ public class GameState {
             this.toY = toY;
             this.toX = toX;
         };
+        void revert(){
+            removePiece(toY,toX);
+            setPiece(piece,fromY,fromX);
+        }
     }
     ArrayList<BoardMovement> moveHistory;
     private final int boardLength;
@@ -171,8 +175,7 @@ public class GameState {
      */
     public void revertMoves(){
         for(BoardMovement m : moveHistory){
-            removePiece(m.toY,m.toX);
-            setPiece(m.piece,m.fromY,m.fromX);
+            m.revert();
         }
     }
     
