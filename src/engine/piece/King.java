@@ -50,7 +50,7 @@ public class King extends SpecialPiece {
         boolean isValid = orthogonalMove.move(gameState, fromX, fromY, toX, toY, 1)
                             || diagonalMove.move(gameState, fromX, fromY, toX, toY, 1);
 
-        if (!hasMoved && !isValid && !gameState.getIsChecked())
+        if (!hasMoved && !isValid && !gameState.isChecked())
             isValid = CastlingRule.canCastle(gameState, fromX, fromY, toX, toY);
 
         if (isValid && !hasMoved){
