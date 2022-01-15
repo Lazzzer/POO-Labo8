@@ -67,10 +67,10 @@ public class ChessEngine implements ChessController {
 
     /**
      * Contrôle si le déplacement d'une pièce vers une case données est légal ou non
-     * @param fromX
-     * @param fromY
-     * @param toX
-     * @param toY
+     * @param fromX Colonne de départ
+     * @param fromY Ligne de départ
+     * @param toX Colonne d'arrivée
+     * @param toY Ligne d'arrivée
      * @return Vrai si le mouvement est légal
      */
     @Override
@@ -83,7 +83,9 @@ public class ChessEngine implements ChessController {
                 gameState.movePiece(fromY, fromX, toY, toX);
                 if (!CheckRule.isChecked(gameState.getTurn(), gameState,
                         gameState.getKingCoords(gameState.getTurn())) ) {
+                    // Si le mouvement est valide l'historique peut être effacé
                     gameState.removedMovedPieces();
+                    // Contrôle si une promotion peut être faite
                     if (!gameState.isChecked && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
                         if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
                             gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
@@ -100,7 +102,7 @@ public class ChessEngine implements ChessController {
                 }
             }
         }
-        endTurn(gameState.isChecked);
+        endTurn();
         return goodTurn;
     }
 
@@ -119,21 +121,25 @@ public class ChessEngine implements ChessController {
         view.displayMessage("Au tour des " + gameState.getTurn() + (check? " / Echec" : ""));
     }
     
-    private void endTurn(boolean check){
+    /**
+     * Gère les actions à faire lors de la fin d'un mouvement
+     */
+    private void endTurn(){
+        gameState.removedMovedPieces();
         if(gameState.endGame){
-            if(check){
+            if(gameState.isChecked){
                 view.displayMessage("ECHEC ET MAT");
             } else{
                 view.displayMessage("PAT");
             }
         } else{
-            displayTurn(check);
+            displayTurn(gameState.isChecked);
         }
     }
     
     /**
      * Fonction contrôlant si un des joueurs est en échec et mat
-     * @param color
+     * @param color Couleur du joueur à contrôler
      * @return vrai si le joueur passé en paramètre est en échec et mat
      */
     private boolean checkMate(PlayerColor color){
@@ -162,9 +168,12 @@ public class ChessEngine implements ChessController {
         return true;
     }
     
+    /**
+     * Gestion des actions lors de d'une nouvelle partie
+     */
     @Override
     public void newGame() {
-        gameState = new GameState(testDoubleForwardWithChecks(), BOARD_SIZE, PlayerColor.WHITE, view);
+        gameState = new GameState(populateBoard(), BOARD_SIZE, PlayerColor.WHITE, view);
         drawBoard();
         displayTurn();
     }

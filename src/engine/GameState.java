@@ -62,7 +62,7 @@ public class GameState {
     
     /**
      * Retourne les coordonnées d'un des deux rois
-     * @param color
+     * @param color Couleur du roi
      * @return
      */
     public int[] getKingCoords(PlayerColor color) {
@@ -71,9 +71,9 @@ public class GameState {
     
     /**
      * Modifie les coordonnées d'un des rois stockés
-     * @param color
-     * @param row
-     * @param column
+     * @param color Couleur du roi
+     * @param row Nouvelle ligne
+     * @param column Nouvelle colonne
      */
     public void setKingCoords(PlayerColor color, int row, int column) {
         if (color == PlayerColor.WHITE) {
@@ -85,7 +85,7 @@ public class GameState {
     
     /**
      * Recherche les coordonnées sur le plateau d'un roi d'une certaine couleur et les stock
-     * @param color
+     * @param color Couleur du roi
      * @return
      */
     public int[] findKingCoords(PlayerColor color) {
@@ -100,8 +100,8 @@ public class GameState {
     
     /**
      * Récupère et renvoi une pièce du plateau
-     * @param row
-     * @param column
+     * @param row Ligne de la pièce
+     * @param column Colonne de la pièce
      * @return Pièce voulue
      */
     public Piece getPiece(int row, int column) {
@@ -112,9 +112,9 @@ public class GameState {
     
     /**
      * Pose une pièce à un endroit sur le plateau et sur l'interface
-     * @param piece
-     * @param row
-     * @param column
+     * @param piece Pièce à placer
+     * @param row Ligne de la pièce
+     * @param column Colonne de la pièce
      */
     public void setPiece(Piece piece, int row, int column) {
         Objects.checkIndex(row, boardLength);
@@ -132,8 +132,8 @@ public class GameState {
     
     /**
      * Enlève une pièce du plateau interne
-     * @param row
-     * @param column
+     * @param row Ligne de la pièce
+     * @param column Colonne de la pièce
      */
     public void removePiece(int row, int column) {
         setPiece(null,row,column);
@@ -141,10 +141,10 @@ public class GameState {
     
     /**
      * Déplace une pièce dans le plateau interne
-     * @param rowFrom
-     * @param columnFrom
-     * @param rowTo
-     * @param columnTo
+     * @param rowFrom Ligne de départ
+     * @param columnFrom Colonne de départ
+     * @param rowTo Ligne d'arrivée
+     * @param columnTo Colonne d'arrivée
      */
     public void movePiece(int rowFrom,int columnFrom,int rowTo,int columnTo){
         if(getPiece(rowTo,columnTo) != null){
@@ -156,10 +156,10 @@ public class GameState {
     
     /**
      * Stock un mouvement efféctué sur le plateau
-     * @param rowFrom
-     * @param columnFrom
-     * @param rowTo
-     * @param columnTo
+     * @param rowFrom Ligne de départ
+     * @param columnFrom Colonne de départ
+     * @param rowTo Ligne d'arrivée
+     * @param columnTo Colonne d'arrivée
      */
     public void createBoardMovement(int rowFrom, int columnFrom, int rowTo, int columnTo){
         moveHistory.add(new BoardMovement(getPiece(rowFrom,columnFrom).clone(),rowFrom,
@@ -203,7 +203,5 @@ public class GameState {
         return isChecked;
     }
     
-    public int getNbTurns() {
-        return nbTurns;
-    }
+    public int getNbTurns() { return nbTurns; }
 }

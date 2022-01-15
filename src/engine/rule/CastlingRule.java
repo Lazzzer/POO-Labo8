@@ -20,11 +20,11 @@ public class CastlingRule {
     
     /**
      * Contrôle si un mouvement donné peut effectuer un castle
-     * @param gameState
-     * @param fromCol
-     * @param fromRow
-     * @param toCol
-     * @param toRow
+     * @param gameState État du jeu
+     * @param fromCol Colonne de départ
+     * @param fromRow Ligne de départ
+     * @param toCol Colonne d'arrivée
+     * @param toRow Ligne d'arrivée
      * @return Vrai si le castle peut se faire
      */
     public static boolean canCastle(GameState gameState, int fromCol, int fromRow, int toCol, int toRow) {
@@ -55,6 +55,8 @@ public class CastlingRule {
                         }
                         gameState.removePiece(validToY,i);
                     }
+                    // Si le mouvement est légal déplace la pièce est met le mouvement dans
+                    // l'historique
                     if(notCheck){
                         gameState.createBoardMovement(toRow,rookX, toRow, nextKing);
                         gameState.movePiece(toRow,rookX, toRow, nextKing);
