@@ -6,6 +6,7 @@ import chess.PlayerColor;
 import engine.piece.Piece;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -48,7 +49,7 @@ public class GameState {
     }
 
     private final ChessView view;
-    private final ArrayList<BoardMovement> moveHistory;
+    private final List<BoardMovement> moveHistory;
     private final int boardLength;
     private final Piece[][] board;
     private final int[][] kingCoords;
