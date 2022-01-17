@@ -30,4 +30,34 @@ public class CheckRule {
         }
         return false;
     }
+
+    /**
+     * Contrôle si un des joueurs est en échec et mat ou en PAT
+     * @param color Couleur du joueur à contrôler
+     * @return Vrai si le joueur passé en paramètre est en échec et mat ou en PAT
+     */
+    public static boolean isEndGame(PlayerColor color, GameState gameState) {
+        boolean endGame = true;
+        for (int i = 0; i < gameState.getBoardLength(); i++) {
+            for (int j = 0; j < gameState.getBoardLength(); j++) {
+                if (gameState.getPiece(i, j) != null && gameState.getPiece(i, j).getColor() == color) {
+                    for (int k = 0; k < gameState.getBoardLength(); k++) {
+                        for (int l = 0; l < gameState.getBoardLength(); l++) {
+                            gameState.createBoardMovement(i, j, k, l);
+                            if (gameState.getPiece(i, j).move(gameState, j, i, l, k)) {
+                                gameState.movePiece(i, j, k, l);
+                                endGame = CheckRule.isChecked(color, gameState, gameState.getKingCoords(color));
+                                gameState.revertMoves();
+                            }
+                            gameState.removeMovedPieces();
+                            if (!endGame) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

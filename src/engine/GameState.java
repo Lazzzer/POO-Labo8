@@ -137,6 +137,13 @@ public class GameState {
     }
 
     /**
+     * Nettoie l'historique des mouvements
+     */
+    public void removeMovedPieces() {
+        moveHistory.clear();
+    }
+
+    /**
      * Stock un mouvement effectué sur le plateau
      * @param fromRow Ligne de départ
      * @param fromCol Colonne de départ
@@ -161,6 +168,24 @@ public class GameState {
      */
     public PlayerColor getTurn() {
         return turn;
+    }
+
+    /**
+     * Remet le plateau à son état avant tous les mouvements efféctués
+     */
+    public void revertMoves() {
+        for (BoardMovement m : moveHistory) {
+            m.revert();
+        }
+    }
+
+    /**
+     * Retourne les coordonnées d'un roi
+     * @param color Couleur du roi
+     * @return Un tableau d'entier contenant les coordonnées d'un roi
+     */
+    public int[] getKingCoords(PlayerColor color) {
+        return color == PlayerColor.WHITE ? kingCoords[0] : kingCoords[1];
     }
 
     /**
@@ -197,22 +222,6 @@ public class GameState {
     }
 
     /**
-     * Nettoie l'historique des mouvements
-     */
-    void removeMovedPieces() {
-        moveHistory.clear();
-    }
-
-    /**
-     * Remet le plateau à son état avant tous les mouvements efféctués
-     */
-    void revertMoves() {
-        for (BoardMovement m : moveHistory) {
-            m.revert();
-        }
-    }
-
-    /**
      * Setter sur isChecked
      * @param checked Valeur spécifiant s'il y a un échec
      */
@@ -234,15 +243,6 @@ public class GameState {
      */
     void setEndGame(boolean endGame) {
         this.endGame = endGame;
-    }
-
-    /**
-     * Retourne les coordonnées d'un roi
-     * @param color Couleur du roi
-     * @return Un tableau d'entier contenant les coordonnées d'un roi
-     */
-    int[] getKingCoords(PlayerColor color) {
-        return color == PlayerColor.WHITE ? kingCoords[0] : kingCoords[1];
     }
 
     /**

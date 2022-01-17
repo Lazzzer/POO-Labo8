@@ -34,7 +34,7 @@ public class ChessEngine implements ChessController {
      */
     @Override
     public void newGame() {
-        gameState = new GameState(populateBoard(), PlayerColor.WHITE, view);
+        gameState = new GameState(testPATAndCheckmate(), PlayerColor.WHITE, view);
         drawBoard();
         displayTurn(false);
     }
@@ -66,7 +66,7 @@ public class ChessEngine implements ChessController {
                     }
 
                     gameState.setChecked(CheckRule.isChecked(gameState.getNextTurn(), gameState, gameState.getKingCoords(gameState.getNextTurn())));
-                    if (checkMate(gameState.getNextTurn())) {
+                    if (CheckRule.isEndGame(gameState.getNextTurn(), gameState)) {
                         gameState.setEndGame(true);
                     }
                     gameState.switchTurn();
@@ -103,36 +103,6 @@ public class ChessEngine implements ChessController {
         } else {
             displayTurn(gameState.isChecked());
         }
-    }
-
-    /**
-     * Contrôle si un des joueurs est en échec et mat
-     * @param color Couleur du joueur à contrôler
-     * @return Vrai si le joueur passé en paramètre est en échec et mat
-     */
-    private boolean checkMate(PlayerColor color) {
-        boolean checkMate = true;
-        for (int i = 0; i < gameState.getBoardLength(); i++) {
-            for (int j = 0; j < gameState.getBoardLength(); j++) {
-                if (gameState.getPiece(i, j) != null && gameState.getPiece(i, j).getColor() == color) {
-                    for (int k = 0; k < gameState.getBoardLength(); k++) {
-                        for (int l = 0; l < gameState.getBoardLength(); l++) {
-                            gameState.createBoardMovement(i, j, k, l);
-                            if (gameState.getPiece(i, j).move(gameState, j, i, l, k)) {
-                                gameState.movePiece(i, j, k, l);
-                                checkMate = CheckRule.isChecked(color, gameState, gameState.getKingCoords(color));
-                                gameState.revertMoves();
-                            }
-                            gameState.removeMovedPieces();
-                            if (!checkMate) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     /**
