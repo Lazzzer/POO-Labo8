@@ -189,6 +189,20 @@ public class GameState {
     }
 
     /**
+     * Modifie les coordonnées d'un des rois
+     * @param color  Couleur du roi
+     * @param row    Nouvelle ligne
+     * @param column Nouvelle colonne
+     */
+    public void setKingCoords(PlayerColor color, int row, int column) {
+        if (color == PlayerColor.WHITE) {
+            this.kingCoords[0] = new int[]{row, column};
+        } else {
+            this.kingCoords[1] = new int[]{row, column};
+        }
+    }
+
+    /**
      * Getter sur nextTurn
      * @return La couleur du joueur du prochain coup
      */
@@ -243,20 +257,6 @@ public class GameState {
      */
     void setEndGame(boolean endGame) {
         this.endGame = endGame;
-    }
-
-    /**
-     * Modifie les coordonnées d'un des rois
-     * @param color  Couleur du roi
-     * @param row    Nouvelle ligne
-     * @param column Nouvelle colonne
-     */
-    private void setKingCoords(PlayerColor color, int row, int column) {
-        if (color == PlayerColor.WHITE) {
-            this.kingCoords[0] = new int[]{row, column};
-        } else {
-            this.kingCoords[1] = new int[]{row, column};
-        }
     }
 
     /**

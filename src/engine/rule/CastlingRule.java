@@ -50,6 +50,7 @@ public class CastlingRule {
                         gameState.setPiece(tmpKing,validToY,i);
                         if (CheckRule.isChecked(gameState.getTurn(), gameState, new int[]{toRow, i})){
                             gameState.removePiece(validToY,i);
+                            gameState.setKingCoords(gameState.getTurn(), fromRow, fromCol);
                             notCheck = false;
                             break;
                         }

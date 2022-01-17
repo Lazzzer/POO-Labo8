@@ -34,7 +34,7 @@ public class ChessEngine implements ChessController {
      */
     @Override
     public void newGame() {
-        gameState = new GameState(testPATAndCheckmate(), PlayerColor.WHITE, view);
+        gameState = new GameState(testCastlingWithChecks(), PlayerColor.WHITE, view);
         drawBoard();
         displayTurn(false);
     }
