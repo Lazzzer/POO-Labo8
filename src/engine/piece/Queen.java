@@ -49,11 +49,11 @@ public class Queen extends Piece{
     }
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
     @Override
-    public Queen clone() {
+    public Queen copy() {
         return new Queen(this);
     }
 }

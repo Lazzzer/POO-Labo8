@@ -61,11 +61,11 @@ public class King extends SpecialPiece {
     }
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
     @Override
-    public King clone() {
+    public King copy() {
         return new King(this);
     }
 }

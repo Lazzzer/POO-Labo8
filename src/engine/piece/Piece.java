@@ -69,8 +69,8 @@ public abstract class Piece implements UserChoice {
     public abstract boolean move(GameState gameState, int fromX, int fromY, int toX, int toY);
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
-    public abstract Piece clone();
+    public abstract Piece copy();
 }

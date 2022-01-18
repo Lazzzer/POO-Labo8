@@ -46,11 +46,11 @@ public class Knight extends Piece {
     }
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
     @Override
-    public Knight clone() {
+    public Knight copy() {
         return new Knight(this);
     }
 }

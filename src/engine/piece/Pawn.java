@@ -81,11 +81,11 @@ public class Pawn extends SpecialPiece{
     }
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
     @Override
-    public Pawn clone() {
+    public Pawn copy() {
         return new Pawn(this);
     }
 }

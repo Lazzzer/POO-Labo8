@@ -46,11 +46,11 @@ public class Bishop extends Piece {
     }
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
     @Override
-    public Bishop clone() {
+    public Bishop copy() {
         return new Bishop(this);
     }
 }

@@ -50,11 +50,11 @@ public class Rook extends SpecialPiece{
     }
 
     /**
-     * Clône la pièce
-     * @return La pièce clônée
+     * Copie la pièce
+     * @return La pièce copiée
      */
     @Override
-    public Rook clone() {
+    public Rook copy() {
         return new Rook(this);
     }
 }

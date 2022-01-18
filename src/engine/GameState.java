@@ -152,7 +152,7 @@ public class GameState {
      * @param toCol Colonne d'arrivée
      */
     public void createBoardMovement(int fromRow, int fromCol, int toRow, int toCol) {
-        moveHistory.add(new BoardMovement(getPiece(fromRow, fromCol).clone(), fromRow, fromCol, toRow, toCol));
+        moveHistory.add(new BoardMovement(getPiece(fromRow, fromCol).copy(), fromRow, fromCol, toRow, toCol));
     }
 
     /**
