@@ -60,7 +60,7 @@ public class ChessEngine implements ChessController {
                     gameState.removeMovedPieces();
 
                     // Contrôle si une promotion peut être faite
-                    if (!gameState.isChecked() && gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
+                    if (gameState.getPiece(toY, toX).getPieceType() == PieceType.PAWN) {
                         if (PromotionRule.canPromote(gameState.getTurn(), gameState, toY))
                             gameState.setPiece(promoteWithInput(toX, toY), toY, toX);
                     }
