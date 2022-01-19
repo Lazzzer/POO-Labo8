@@ -34,7 +34,7 @@ public class ChessEngine implements ChessController {
      */
     @Override
     public void newGame() {
-        gameState = new GameState(testCastlingWithChecks(), PlayerColor.WHITE, view);
+        gameState = new GameState(populateBoard(), PlayerColor.WHITE, view);
         drawBoard();
         displayTurn(false);
     }
@@ -184,96 +184,4 @@ public class ChessEngine implements ChessController {
 
         return board;
     }
-
-    /* ------------ A DELETE ------------ */
-
-    private Piece[][] test() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-
-        board[0][0] = new King(PlayerColor.WHITE);
-        board[0][7] = new King(PlayerColor.BLACK);
-
-        return board;
-    }
-
-    private Piece[][] testPromotionWithChecks() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-
-        board[BOARD_SIZE - 2][0] = new Pawn(PlayerColor.WHITE);
-        board[BOARD_SIZE - 3][0] = new King(PlayerColor.BLACK);
-        board[BOARD_SIZE - 2][4] = new King(PlayerColor.WHITE);
-
-        return board;
-    }
-
-    private Piece[][] testEnPassantWithChecks() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-
-        board[2][3] = new King(PlayerColor.WHITE);
-        board[3][3] = new Pawn(PlayerColor.WHITE);
-        board[7][7] = new King(PlayerColor.BLACK);
-        board[5][3] = new Queen(PlayerColor.BLACK);
-        board[6][2] = new Pawn(PlayerColor.BLACK);
-
-        return board;
-    }
-
-    private Piece[][] testDoubleForwardWithChecks() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-
-        board[0][4] = new King(PlayerColor.WHITE);
-        board[1][3] = new Pawn(PlayerColor.WHITE);
-        board[7][7] = new King(PlayerColor.BLACK);
-        board[3][1] = new Queen(PlayerColor.BLACK);
-
-        return board;
-    }
-
-    private Piece[][] testEnPassant() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-        board[7][0] = new King(PlayerColor.WHITE);
-        board[7][7] = new King(PlayerColor.BLACK);
-
-        board[1][0] = new Pawn(PlayerColor.WHITE);
-        board[1][2] = new Pawn(PlayerColor.WHITE);
-        board[4][5] = new Pawn(PlayerColor.WHITE);
-
-        board[6][4] = new Pawn(PlayerColor.BLACK);
-        board[6][6] = new Pawn(PlayerColor.BLACK);
-        board[3][1] = new Pawn(PlayerColor.BLACK);
-
-        return board;
-    }
-
-    private Piece[][] testCastlingWithChecks() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-
-        // Tours
-        board[0][0] = new Rook(PlayerColor.WHITE);
-        board[0][BOARD_SIZE - 1] = new Rook(PlayerColor.WHITE);
-        board[BOARD_SIZE - 1][0] = new Rook(PlayerColor.BLACK);
-        board[BOARD_SIZE - 1][BOARD_SIZE - 1] = new Rook(PlayerColor.BLACK);
-
-        board[3][BOARD_SIZE - 2] = new Pawn(PlayerColor.WHITE);
-
-        // Reines et Rois
-        board[0][3] = new Queen(PlayerColor.WHITE);
-        board[0][BOARD_SIZE - 1 - 3] = new King(PlayerColor.WHITE);
-        board[BOARD_SIZE - 1][3] = new Queen(PlayerColor.BLACK);
-        board[BOARD_SIZE - 1][BOARD_SIZE - 1 - 3] = new King(PlayerColor.BLACK);
-
-        return board;
-    }
-
-    private Piece[][] testPATAndCheckmate() {
-        Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
-        board[6][2] = new King(PlayerColor.WHITE);
-        board[6][0] = new King(PlayerColor.BLACK);
-
-        board[5][2] = new Queen(PlayerColor.WHITE);
-
-        return board;
-    }
-
-    /* ------------ A DELETE ------------ */
 }
